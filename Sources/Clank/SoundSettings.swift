@@ -60,7 +60,7 @@ struct AppSettings: Codable {
         lidSoundPath = try container.decodeIfPresent(String.self, forKey: .lidSoundPath) ?? ""
         lidAngleThreshold = try container.decodeIfPresent(Double.self, forKey: .lidAngleThreshold) ?? 4.0
         lidSoundCooldownMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidSoundCooldownMilliseconds) ?? 1200
-        lidStopMarginMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidStopMarginMilliseconds) ?? 200
+        lidStopMarginMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidStopMarginMilliseconds) ?? 2000
         lidMaxPlaybackMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidMaxPlaybackMilliseconds) ?? 2000
         minAmplitude = try container.decode(Double.self, forKey: .minAmplitude)
         cooldownMilliseconds = try container.decode(Int.self, forKey: .cooldownMilliseconds)
@@ -116,7 +116,7 @@ final class SettingsStore {
             lidSoundPath: lid,
             lidAngleThreshold: 4.0,
             lidSoundCooldownMilliseconds: 1200,
-            lidStopMarginMilliseconds: 200,
+            lidStopMarginMilliseconds: 2000,
             lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: 0.05,
             cooldownMilliseconds: 750,
@@ -151,7 +151,7 @@ final class SettingsStore {
         copy.soundVolume = min(max(copy.soundVolume, 0.0), 1.0)
         copy.lidAngleThreshold = min(max(copy.lidAngleThreshold, 1.0), 45.0)
         copy.lidSoundCooldownMilliseconds = min(max(copy.lidSoundCooldownMilliseconds, 100), 5000)
-        copy.lidStopMarginMilliseconds = min(max(copy.lidStopMarginMilliseconds, 50), 800)
+        copy.lidStopMarginMilliseconds = min(max(copy.lidStopMarginMilliseconds, 50), 2000)
         copy.lidMaxPlaybackMilliseconds = min(max(copy.lidMaxPlaybackMilliseconds, 500), 5000)
         copy.minAmplitude = min(max(copy.minAmplitude, 0.001), 1.0)
         if copy.maxScaleAmplitude >= 0.75 {

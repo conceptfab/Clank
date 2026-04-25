@@ -20,7 +20,7 @@ final class SettingsWindowController: NSWindowController {
     private let lidThresholdValue = NSTextField(labelWithString: "")
     private let lidCooldownSlider = NSSlider(value: 1200, minValue: 100, maxValue: 5000, target: nil, action: nil)
     private let lidCooldownValue = NSTextField(labelWithString: "")
-    private let lidStopMarginSlider = NSSlider(value: 200, minValue: 50, maxValue: 800, target: nil, action: nil)
+    private let lidStopMarginSlider = NSSlider(value: 2000, minValue: 50, maxValue: 2000, target: nil, action: nil)
     private let lidStopMarginValue = NSTextField(labelWithString: "")
     private let lidMaxPlaybackSlider = NSSlider(value: 2000, minValue: 500, maxValue: 5000, target: nil, action: nil)
     private let lidMaxPlaybackValue = NSTextField(labelWithString: "")
@@ -29,7 +29,8 @@ final class SettingsWindowController: NSWindowController {
     private let sensitivityValue = NSTextField(labelWithString: "")
     private let maxScaleSlider = NSSlider(value: 0.15, minValue: 0.06, maxValue: 0.50, target: nil, action: nil)
     private let maxScaleValue = NSTextField(labelWithString: "")
-    private let cooldownField = NSTextField(string: "750")
+    private let cooldownSlider = NSSlider(value: 750, minValue: 100, maxValue: 5000, target: nil, action: nil)
+    private let cooldownValue = NSTextField(labelWithString: "")
     private let autostartCheckbox = NSButton(checkboxWithTitle: "Uruchamiaj Clank przy logowaniu", target: nil, action: nil)
     private let visualizerView = SensorVisualizerView()
 
@@ -200,14 +201,13 @@ final class SettingsWindowController: NSWindowController {
         sensitivitySlider.action = #selector(sensitivityChanged)
         maxScaleSlider.target = self
         maxScaleSlider.action = #selector(maxScaleChanged)
-        cooldownField.alignment = .right
-        cooldownField.target = self
-        cooldownField.action = #selector(cooldownChanged)
+        cooldownSlider.target = self
+        cooldownSlider.action = #selector(cooldownChanged)
 
         root.addArrangedSubview(section(title: "Pomiar uderzen", rows: [
             formRow("Czulosc minimum", sliderRow(slider: sensitivitySlider, value: sensitivityValue)),
             formRow("Gorny prog skali", sliderRow(slider: maxScaleSlider, value: maxScaleValue)),
-            formRow("Cooldown", numericRow(field: cooldownField, suffix: "ms"))
+            formRow("Cooldown", sliderRow(slider: cooldownSlider, value: cooldownValue))
         ]))
 
         visualizerView.widthAnchor.constraint(equalToConstant: 600).isActive = true
@@ -367,7 +367,7 @@ final class SettingsWindowController: NSWindowController {
         lidMaxPlaybackSlider.doubleValue = Double(settings.lidMaxPlaybackMilliseconds)
         sensitivitySlider.doubleValue = settings.minAmplitude
         maxScaleSlider.doubleValue = settings.maxScaleAmplitude
-        cooldownField.stringValue = "\(settings.cooldownMilliseconds)"
+        cooldownSlider.doubleValue = Double(settings.cooldownMilliseconds)
         autostartCheckbox.state = AutostartManager.isEnabled ? .on : .off
         refreshValueLabels()
         refreshModeVisibility()
@@ -386,6 +386,7 @@ final class SettingsWindowController: NSWindowController {
         lidMaxPlaybackValue.stringValue = "\(Int(lidMaxPlaybackSlider.doubleValue.rounded())) ms"
         sensitivityValue.stringValue = String(format: "%.3fg", sensitivitySlider.doubleValue)
         maxScaleValue.stringValue = String(format: "%.2fg", maxScaleSlider.doubleValue)
+        cooldownValue.stringValue = "\(Int(cooldownSlider.doubleValue.rounded())) ms"
     }
 
     private func displayName(_ path: String) -> String {
@@ -454,6 +455,7 @@ final class SettingsWindowController: NSWindowController {
     }
 
     @objc private func cooldownChanged() {
+        refreshValueLabels()
         saveSettings()
     }
 
@@ -525,7 +527,7 @@ final class SettingsWindowController: NSWindowController {
         settings.lidMaxPlaybackMilliseconds = Int(lidMaxPlaybackSlider.doubleValue)
         settings.minAmplitude = sensitivitySlider.doubleValue
         settings.maxScaleAmplitude = maxScaleSlider.doubleValue
-        settings.cooldownMilliseconds = max(Int(cooldownField.intValue), 100)
+        settings.cooldownMilliseconds = Int(cooldownSlider.doubleValue)
         store.save(settings)
     }
 

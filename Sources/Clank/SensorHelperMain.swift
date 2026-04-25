@@ -20,7 +20,7 @@ enum SensorHelperMain {
             lidSoundPath: "",
             lidAngleThreshold: 4.0,
             lidSoundCooldownMilliseconds: 1200,
-            lidStopMarginMilliseconds: 200,
+            lidStopMarginMilliseconds: 2000,
             lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: minAmplitude,
             cooldownMilliseconds: cooldown,
