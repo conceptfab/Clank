@@ -29,7 +29,6 @@ final class AccelerometerMonitor {
 
     private let reportBufferSize = 4096
     private let imuReportLength = 22
-    private let imuDecimation = 8
     private let imuDataOffset = 6
     private let accelScale = 65536.0
     private let pageVendor = 0xFF00
@@ -42,7 +41,6 @@ final class AccelerometerMonitor {
     private var thread: Thread?
     private var isRunning = false
     private var registrations: [HIDRegistration] = []
-    private var decimation = 0
     private var lastLidAngle: Double?
     private var sensorRunLoop: CFRunLoop?
 
@@ -124,7 +122,7 @@ final class AccelerometerMonitor {
 
             setRegistryInt32(service, key: "SensorPropertyReportingState", value: 1)
             setRegistryInt32(service, key: "SensorPropertyPowerState", value: 1)
-            setRegistryInt32(service, key: "ReportInterval", value: 1000)
+            setRegistryInt32(service, key: "ReportInterval", value: 8000)
         }
     }
 
@@ -202,10 +200,6 @@ final class AccelerometerMonitor {
         }
         guard kind == .accelerometer else { return }
         guard length == imuReportLength else { return }
-
-        decimation += 1
-        guard decimation >= imuDecimation else { return }
-        decimation = 0
 
         let data = UnsafeBufferPointer(start: report, count: Int(length))
         let rawX = readInt32LE(data, offset: imuDataOffset)
