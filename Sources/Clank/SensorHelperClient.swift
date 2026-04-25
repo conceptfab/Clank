@@ -27,6 +27,7 @@ final class SensorHelperClient {
     private var readOffset: UInt64 = 0
     private var pending = Data()
     private var lastHeartbeatTouch = Date.distantPast
+    private var helperProcess: Process?
 
     init(settingsProvider: @escaping () -> AppSettings) {
         self.settingsProvider = settingsProvider
@@ -44,25 +45,40 @@ final class SensorHelperClient {
         FileManager.default.createFile(atPath: heartbeatURL.path, contents: Data("alive".utf8))
 
         let settings = settingsProvider()
-        let helperCommand = [
-            executablePath.shellQuoted(),
+        let helperArgs: [String] = [
+            "-n",
+            executablePath,
             "--sensor-helper",
-            "--events-file", eventsURL.path.shellQuoted(),
-            "--heartbeat-file", heartbeatURL.path.shellQuoted(),
+            "--events-file", eventsURL.path,
+            "--heartbeat-file", heartbeatURL.path,
             "--min-amplitude", String(format: "%.6f", settings.minAmplitude),
             "--cooldown", "\(settings.cooldownMilliseconds)"
-        ].joined(separator: " ")
+        ]
 
-        let logPath = FileManager.default.temporaryDirectory
+        let logURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("Clank-\(sessionID).helper.log")
-            .path
-        let shellCommand = "\(helperCommand) > \(logPath.shellQuoted()) 2>&1 &"
-        let script = "do shell script \(shellCommand.appleScriptQuoted()) with administrator privileges"
+        FileManager.default.createFile(atPath: logURL.path, contents: nil)
 
-        var errorInfo: NSDictionary?
-        if NSAppleScript(source: script)?.executeAndReturnError(&errorInfo) == nil {
-            let message = (errorInfo?[NSAppleScript.errorMessage] as? String) ?? "macOS odrzucil uruchomienie helpera."
-            throw SensorHelperClientError.launchRejected(message)
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
+        process.arguments = helperArgs
+
+        if let logHandle = try? FileHandle(forWritingTo: logURL) {
+            process.standardOutput = logHandle
+            process.standardError = logHandle
+        }
+
+        process.terminationHandler = { proc in
+            if proc.terminationStatus != 0 {
+                NSLog("Clank: helper exited with status \(proc.terminationStatus). If this happens at startup, run `make install-sudoers` once to enable passwordless launch.")
+            }
+        }
+
+        do {
+            try process.run()
+            helperProcess = process
+        } catch {
+            throw SensorHelperClientError.launchRejected("nie udalo sie uruchomic helpera: \(error.localizedDescription)")
         }
 
         let timer = DispatchSource.makeTimerSource(queue: .main)
@@ -77,6 +93,10 @@ final class SensorHelperClient {
     func stop() {
         pollTimer?.cancel()
         pollTimer = nil
+        if let proc = helperProcess, proc.isRunning {
+            proc.terminate()
+        }
+        helperProcess = nil
         try? FileManager.default.removeItem(at: heartbeatURL)
     }
 

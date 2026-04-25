@@ -4,7 +4,7 @@ CONFIGURATION ?= release
 BUILD_DIR := build
 APP_DIR := $(BUILD_DIR)/$(APP_NAME).app
 
-.PHONY: build run bundle clean
+.PHONY: build run bundle clean install-sudoers uninstall-sudoers
 
 build:
 	swift build -c $(CONFIGURATION)
@@ -23,3 +23,14 @@ bundle: build
 
 clean:
 	rm -rf .build "$(BUILD_DIR)"
+
+install-sudoers:
+	@echo "Installing sudoers rule for $(USER)... (you may be prompted for your password)"
+	@sudo sh -c 'echo "$(USER) ALL=(ALL) NOPASSWD: $$(pwd)/.build/debug/$(EXECUTABLE), $$(pwd)/.build/release/$(EXECUTABLE), $$(pwd)/$(APP_DIR)/Contents/MacOS/$(EXECUTABLE), /Applications/$(APP_NAME).app/Contents/MacOS/$(EXECUTABLE), $$(pwd)/.build/arm64-apple-macosx/debug/$(EXECUTABLE), $$(pwd)/.build/arm64-apple-macosx/release/$(EXECUTABLE)" > /etc/sudoers.d/clank'
+	@sudo chmod 0440 /etc/sudoers.d/clank
+	@echo "Done! /etc/sudoers.d/clank has been created."
+
+uninstall-sudoers:
+	@echo "Removing sudoers rule for $(USER)... (you may be prompted for your password)"
+	@sudo rm -f /etc/sudoers.d/clank
+	@echo "Done! /etc/sudoers.d/clank has been removed."
