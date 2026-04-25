@@ -21,6 +21,10 @@ let package = Package(
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("IOKit")
             ]
+        ),
+        .testTarget(
+            name: "ClankTests",
+            dependencies: ["Clank"]
         )
     ]
 )
