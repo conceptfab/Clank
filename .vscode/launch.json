@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:SpankMac}",
+            "name": "Debug SpankMac",
+            "target": "SpankMac",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug SpankMac"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:SpankMac}",
+            "name": "Release SpankMac",
+            "target": "SpankMac",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release SpankMac"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:SpankMac}",
+            "name": "Debug Clank",
+            "target": "Clank",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Clank"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:SpankMac}",
+            "name": "Release Clank",
+            "target": "Clank",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Clank"
+        }
+    ]
+}

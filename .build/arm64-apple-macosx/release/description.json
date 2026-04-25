@@ -1,0 +1,457 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank_Clank.bundle/audio" : {
+      "inputs" : [
+        {
+          "kind" : "directory",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/Resources/audio"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "directory",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank_Clank.bundle/audio"
+        }
+      ]
+    }
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.Clank-arm64-apple-macosx-release.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources",
+      "importPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<Clank-arm64-apple-macosx-release.module-resources>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "Clank",
+      "moduleOutputPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules/Clank.swiftmodule",
+      "objects" : [
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/main.swift.o",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx13.0",
+        "-whole-module-optimization",
+        "-num-threads",
+        "12",
+        "-serialize-diagnostics",
+        "-O",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
+        "-module-cache-path",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "Clank_main",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "spankmac"
+      ],
+      "outputFileMapPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules/Clank.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift",
+        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+      ],
+      "tempsPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build",
+      "wholeModuleOptimization" : true
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "Clank" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "Clank",
+      "-package-name",
+      "spankmac",
+      "-c",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift",
+      "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift",
+      "-I",
+      "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules",
+      "-target",
+      "arm64-apple-macosx13.0",
+      "-whole-module-optimization",
+      "-num-threads",
+      "12",
+      "-serialize-diagnostics",
+      "-O",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
+      "-module-cache-path",
+      "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "Clank_main",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "spankmac",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "Clank" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources"
+    },
+    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.product/Objects.LinkFileList"
+    },
+    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}
