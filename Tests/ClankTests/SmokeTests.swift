@@ -2,8 +2,21 @@ import XCTest
 @testable import Clank
 
 final class SmokeTests: XCTestCase {
-    func test_soundResolver_levelClampsBelowMin() {
-        let settings = AppSettings(
+    func test_soundResolver_levelClampsToZeroBelowMin() {
+        let resolver = SoundResolver(settings: makeSettings())
+        XCTAssertEqual(resolver.level(for: 0.0), 0)
+        XCTAssertEqual(resolver.level(for: 0.05), 0)
+    }
+
+    func test_soundResolver_levelClampsToFourAboveMax() {
+        let resolver = SoundResolver(settings: makeSettings())
+        XCTAssertEqual(resolver.level(for: 0.149), 4)
+        XCTAssertEqual(resolver.level(for: 0.15), 4)
+        XCTAssertEqual(resolver.level(for: 1.0), 4)
+    }
+
+    private func makeSettings() -> AppSettings {
+        AppSettings(
             soundMode: .scaled,
             singleSoundPath: "",
             scaledSoundPaths: Array(repeating: "", count: 5),
@@ -16,10 +29,5 @@ final class SmokeTests: XCTestCase {
             cooldownMilliseconds: 750,
             maxScaleAmplitude: 0.15
         )
-        let resolver = SoundResolver(settings: settings)
-        XCTAssertEqual(resolver.level(for: 0.0), 0)
-        XCTAssertEqual(resolver.level(for: 0.05), 0)
-        XCTAssertEqual(resolver.level(for: 0.149), 4)
-        XCTAssertEqual(resolver.level(for: 1.0), 4)
     }
 }
