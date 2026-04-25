@@ -17,6 +17,7 @@ bundle: build
 	mkdir -p "$(APP_DIR)/Contents/MacOS" "$(APP_DIR)/Contents/Resources"
 	cp ".build/$(CONFIGURATION)/$(EXECUTABLE)" "$(APP_DIR)/Contents/MacOS/$(EXECUTABLE)"
 	cp "Info.plist" "$(APP_DIR)/Contents/Info.plist"
+	cp "Sources/Clank/Resources/AppIcon.icns" "$(APP_DIR)/Contents/Resources/AppIcon.icns"
 	if [ -d ".build/$(CONFIGURATION)/Clank_Clank.bundle" ]; then cp -R ".build/$(CONFIGURATION)/Clank_Clank.bundle" "$(APP_DIR)/"; cp -R ".build/$(CONFIGURATION)/Clank_Clank.bundle" "$(APP_DIR)/Contents/Resources/"; fi
 	chmod +x "$(APP_DIR)/Contents/MacOS/$(EXECUTABLE)"
 
