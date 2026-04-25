@@ -9,6 +9,13 @@
     "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AccelerometerMonitor.swiftdeps",
     "diagnostics": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AccelerometerMonitor.dia"
   },
+  "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift": {
+    "dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AmplitudeWindow.d",
+    "object": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AmplitudeWindow.swift.o",
+    "swiftmodule": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AmplitudeWindow~partial.swiftmodule",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AmplitudeWindow.swiftdeps",
+    "diagnostics": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AmplitudeWindow.dia"
+  },
   "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift": {
     "dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AppDelegate.d",
     "object": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AppDelegate.swift.o",

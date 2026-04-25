@@ -1,0 +1,31 @@
+{
+  "": {
+    "dependencies": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/ClankTests.d",
+    "object": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/ClankTests.o",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/primary.swiftdeps"
+  },
+  "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift": {
+    "object": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests.swift.o",
+    "swiftmodule": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests.swiftdeps",
+    "diagnostics": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests.dia"
+  },
+  "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift": {
+    "object": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests.swift.o",
+    "swiftmodule": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests.swiftdeps",
+    "diagnostics": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests.dia"
+  },
+  "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift": {
+    "object": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests.swift.o",
+    "swiftmodule": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests.swiftdeps",
+    "diagnostics": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests.dia"
+  },
+  "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift": {
+    "object": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests.swift.o",
+    "swiftmodule": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests.swiftdeps",
+    "diagnostics": "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests.dia"
+  }
+}

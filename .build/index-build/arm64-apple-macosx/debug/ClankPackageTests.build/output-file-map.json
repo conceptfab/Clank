@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/primary.swiftdeps"
+  },
+  "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.derived/runner.swift": {
+    "dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/runner.d",
+    "object": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/runner.swift.o",
+    "swiftmodule": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/runner.swiftdeps",
+    "diagnostics": "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/runner.dia"
+  }
+}

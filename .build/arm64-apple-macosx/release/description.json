@@ -1,19 +1,51 @@
 {
   "builtTestProducts" : [
-
+    {
+      "binaryPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.xctest/Contents/MacOS/ClankPackageTests",
+      "packagePath" : "/Users/micz/__DEV__/Clank",
+      "productName" : "ClankPackageTests"
+    }
   ],
   "copyCommands" : {
-    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank_Clank.bundle/audio" : {
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle/AppIcon.icns" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/Resources/AppIcon.icns"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle/AppIcon.icns"
+        }
+      ]
+    },
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle/audio" : {
       "inputs" : [
         {
           "kind" : "directory",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/Resources/audio"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/Resources/audio"
         }
       ],
       "outputs" : [
         {
           "kind" : "directory",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank_Clank.bundle/audio"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle/audio"
+        }
+      ]
+    },
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle/icon.png" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/Resources/icon.png"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle/icon.png"
         }
       ]
     }
@@ -32,60 +64,64 @@
   "swiftCommands" : {
     "C.Clank-arm64-apple-macosx-release.module" : {
       "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
-      "fileList" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources",
-      "importPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules",
+      "fileList" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/sources",
+      "importPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules",
       "inputs" : [
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AudioPlayer.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AutostartManager.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperClient.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperMain.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SensorNotifications.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SettingsWindowController.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SlapDetector.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SoundSettings.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/main.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
         },
         {
           "kind" : "virtual",
@@ -93,25 +129,26 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/sources"
         }
       ],
       "isLibrary" : false,
       "moduleName" : "Clank",
-      "moduleOutputPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules/Clank.swiftmodule",
+      "moduleOutputPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/Clank.swiftmodule",
       "objects" : [
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/main.swift.o",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AmplitudeWindow.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/main.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
       ],
       "otherArguments" : [
         "-target",
@@ -125,7 +162,7 @@
         "-DSWIFT_PACKAGE",
         "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
         "-module-cache-path",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/ModuleCache",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ModuleCache",
         "-parseable-output",
         "-Xfrontend",
         "-entry-point-function-name",
@@ -157,79 +194,301 @@
         "-Xcc",
         "-g",
         "-package-name",
-        "spankmac"
+        "clank"
       ],
-      "outputFileMapPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/output-file-map.json",
+      "outputFileMapPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/output-file-map.json",
       "outputs" : [
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AmplitudeWindow.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules/Clank.swiftmodule"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/Clank.swiftmodule"
         }
       ],
       "prepareForIndexing" : false,
       "sources" : [
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift",
-        "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+        "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/AudioPlayer.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/AutostartManager.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperClient.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperMain.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/SensorNotifications.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/SettingsWindowController.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/SlapDetector.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/SoundSettings.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/main.swift",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
       ],
-      "tempsPath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build",
+      "tempsPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.ClankPackageTests-arm64-apple-macosx-release.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/sources",
+      "importPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/ClankTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "ClankPackageTests",
+      "moduleOutputPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/ClankPackageTests.swiftmodule",
+      "objects" : [
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx13.0",
+        "-whole-module-optimization",
+        "-num-threads",
+        "12",
+        "-serialize-diagnostics",
+        "-O",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/include/ClankPackageTests-Swift.h",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "clank"
+      ],
+      "outputFileMapPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/ClankPackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.ClankTests-arm64-apple-macosx-release.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/sources",
+      "importPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "ClankTests",
+      "moduleOutputPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/ClankTests.swiftmodule",
+      "objects" : [
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-whole-module-optimization",
+        "-num-threads",
+        "12",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/index/store",
+        "-O",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "clank"
+      ],
+      "outputFileMapPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules/ClankTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift",
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift",
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift",
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift"
+      ],
+      "tempsPath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build",
       "wholeModuleOptimization" : true
     }
   },
@@ -242,22 +501,23 @@
       "-module-name",
       "Clank",
       "-package-name",
-      "spankmac",
+      "clank",
       "-c",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift",
-      "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/AudioPlayer.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/AutostartManager.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperClient.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperMain.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/SensorNotifications.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/SettingsWindowController.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/SlapDetector.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/SoundSettings.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/main.swift",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift",
       "-I",
-      "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Modules",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules",
       "-target",
       "arm64-apple-macosx13.0",
       "-whole-module-optimization",
@@ -269,7 +529,7 @@
       "-DSWIFT_PACKAGE",
       "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
       "-module-cache-path",
-      "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/ModuleCache",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ModuleCache",
       "-parseable-output",
       "-Xfrontend",
       "-entry-point-function-name",
@@ -301,7 +561,127 @@
       "-Xcc",
       "-g",
       "-package-name",
-      "spankmac",
+      "clank",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "ClankPackageTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "ClankPackageTests",
+      "-package-name",
+      "clank",
+      "-c",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.derived/runner.swift",
+      "-I",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules",
+      "-target",
+      "arm64-apple-macosx13.0",
+      "-whole-module-optimization",
+      "-num-threads",
+      "12",
+      "-serialize-diagnostics",
+      "-O",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/include/ClankPackageTests-Swift.h",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "clank",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "ClankTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "ClankTests",
+      "-package-name",
+      "clank",
+      "-c",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift",
+      "-I",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-whole-module-optimization",
+      "-num-threads",
+      "12",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/index/store",
+      "-O",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "clank",
       "-driver-use-frontend-path",
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
     ]
@@ -309,13 +689,30 @@
   "targetDependencyMap" : {
     "Clank" : [
 
+    ],
+    "ClankPackageTests" : [
+      "ClankTests",
+      "Clank"
+    ],
+    "ClankTests" : [
+      "Clank"
     ]
   },
   "testDiscoveryCommands" : {
 
   },
   "testEntryPointCommands" : {
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.derived/runner.swift" : {
+      "inputs" : [
 
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.derived/runner.swift"
+        }
+      ]
+    }
   },
   "traitConfiguration" : {
     "default" : {
@@ -323,7 +720,7 @@
     }
   },
   "writeCommands" : {
-    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources" : {
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/sources" : {
       "alwaysOutOfDate" : false,
       "inputs" : [
         {
@@ -332,56 +729,60 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AccelerometerMonitor.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AppDelegate.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AudioPlayer.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/AutostartManager.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AudioPlayer.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperClient.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AutostartManager.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorHelperMain.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperClient.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SensorNotifications.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SensorHelperMain.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SettingsWindowController.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SensorNotifications.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SlapDetector.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SettingsWindowController.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/SoundSettings.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SlapDetector.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/Sources/Clank/main.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/SoundSettings.swift"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/DerivedSources/resource_bundle_accessor.swift"
         }
       ],
-      "outputFilePath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/sources"
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/sources"
     },
-    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.product/Objects.LinkFileList" : {
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.product/Objects.LinkFileList" : {
       "alwaysOutOfDate" : false,
       "inputs" : [
         {
@@ -390,56 +791,182 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AmplitudeWindow.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
         },
         {
           "kind" : "file",
-          "name" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
         }
       ],
-      "outputFilePath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank.product/Objects.LinkFileList"
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.product/Objects.LinkFileList"
     },
-    "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt" : {
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/sources"
+    },
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AccelerometerMonitor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AmplitudeWindow.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AudioPlayer.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/AutostartManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorHelperMain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SensorNotifications.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SettingsWindowController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SlapDetector.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/SoundSettings.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank.build/resource_bundle_accessor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AmplitudeWindowTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/AudioPlayerTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SlapDetectorTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/SmokeTests.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankPackageTests.product/Objects.LinkFileList"
+    },
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/ClankTests.build/sources"
+    },
+    "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt" : {
       "alwaysOutOfDate" : true,
       "inputs" : [
         {
@@ -451,7 +978,7 @@
           "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
         }
       ],
-      "outputFilePath" : "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/swift-version--58304C5D6DBC2206.txt"
     }
   }
 }

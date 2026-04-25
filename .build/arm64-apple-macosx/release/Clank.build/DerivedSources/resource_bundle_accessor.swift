@@ -3,7 +3,7 @@ import Foundation
 extension Foundation.Bundle {
     static let module: Bundle = {
         let mainPath = Bundle.main.bundleURL.appendingPathComponent("Clank_Clank.bundle").path
-        let buildPath = "/Users/micz/__DEV__/spank-master/SpankMac/.build/arm64-apple-macosx/release/Clank_Clank.bundle"
+        let buildPath = "/Users/micz/__DEV__/Clank/.build/arm64-apple-macosx/release/Clank_Clank.bundle"
 
         let preferredBundle = Bundle(path: mainPath)
 

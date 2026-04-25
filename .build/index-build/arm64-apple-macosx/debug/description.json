@@ -1,8 +1,26 @@
 {
   "builtTestProducts" : [
-
+    {
+      "binaryPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.xctest/Contents/MacOS/ClankPackageTests",
+      "packagePath" : "/Users/micz/__DEV__/Clank",
+      "productName" : "ClankPackageTests"
+    }
   ],
   "copyCommands" : {
+    "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank_Clank.bundle/AppIcon.icns" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/Resources/AppIcon.icns"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank_Clank.bundle/AppIcon.icns"
+        }
+      ]
+    },
     "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank_Clank.bundle/audio" : {
       "inputs" : [
         {
@@ -14,6 +32,20 @@
         {
           "kind" : "directory",
           "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank_Clank.bundle/audio"
+        }
+      ]
+    },
+    "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank_Clank.bundle/icon.png" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/Resources/icon.png"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank_Clank.bundle/icon.png"
         }
       ]
     }
@@ -38,6 +70,10 @@
         {
           "kind" : "file",
           "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift"
         },
         {
           "kind" : "file",
@@ -101,6 +137,7 @@
       "moduleOutputPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/Clank.swiftmodule",
       "objects" : [
         "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AccelerometerMonitor.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AmplitudeWindow.swift.o",
         "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AppDelegate.swift.o",
         "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AudioPlayer.swift.o",
         "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/AutostartManager.swift.o",
@@ -178,6 +215,7 @@
       "prepareForIndexing" : true,
       "sources" : [
         "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift",
+        "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift",
         "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift",
         "/Users/micz/__DEV__/Clank/Sources/Clank/AudioPlayer.swift",
         "/Users/micz/__DEV__/Clank/Sources/Clank/AutostartManager.swift",
@@ -191,6 +229,217 @@
         "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/DerivedSources/resource_bundle_accessor.swift"
       ],
       "tempsPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.ClankPackageTests-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/sources",
+      "importPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/ClankTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "ClankPackageTests",
+      "moduleOutputPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/ClankPackageTests.swiftmodule",
+      "objects" : [
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx13.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/include/ClankPackageTests-Swift.h",
+        "-Xfrontend",
+        "-experimental-lazy-typecheck",
+        "-Xfrontend",
+        "-experimental-skip-all-function-bodies",
+        "-Xfrontend",
+        "-experimental-allow-module-with-compiler-errors",
+        "-Xfrontend",
+        "-empty-abi-descriptor",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "clank"
+      ],
+      "outputFileMapPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/ClankPackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : true,
+      "sources" : [
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.ClankTests-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/sources",
+      "importPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/Clank.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "ClankTests",
+      "moduleOutputPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/ClankTests.swiftmodule",
+      "objects" : [
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/AmplitudeWindowTests.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/AudioPlayerTests.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/SlapDetectorTests.swift.o",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/SmokeTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j12",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "5",
+        "-Xfrontend",
+        "-experimental-lazy-typecheck",
+        "-Xfrontend",
+        "-experimental-skip-all-function-bodies",
+        "-Xfrontend",
+        "-experimental-allow-module-with-compiler-errors",
+        "-Xfrontend",
+        "-empty-abi-descriptor",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "clank"
+      ],
+      "outputFileMapPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules/ClankTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : true,
+      "sources" : [
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift",
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift",
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift",
+        "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift"
+      ],
+      "tempsPath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build",
       "wholeModuleOptimization" : false
     }
   },
@@ -206,6 +455,7 @@
       "clank",
       "-c",
       "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift",
+      "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift",
       "/Users/micz/__DEV__/Clank/Sources/Clank/AppDelegate.swift",
       "/Users/micz/__DEV__/Clank/Sources/Clank/AudioPlayer.swift",
       "/Users/micz/__DEV__/Clank/Sources/Clank/AutostartManager.swift",
@@ -274,11 +524,152 @@
       "clank",
       "-driver-use-frontend-path",
       "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "ClankPackageTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "ClankPackageTests",
+      "-package-name",
+      "clank",
+      "-c",
+      "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.derived/runner.swift",
+      "-I",
+      "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx13.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/include/ClankPackageTests-Swift.h",
+      "-Xfrontend",
+      "-experimental-lazy-typecheck",
+      "-Xfrontend",
+      "-experimental-skip-all-function-bodies",
+      "-Xfrontend",
+      "-experimental-allow-module-with-compiler-errors",
+      "-Xfrontend",
+      "-empty-abi-descriptor",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "clank",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "ClankTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "ClankTests",
+      "-package-name",
+      "clank",
+      "-c",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift",
+      "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift",
+      "-I",
+      "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j12",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-Xfrontend",
+      "-experimental-lazy-typecheck",
+      "-Xfrontend",
+      "-experimental-skip-all-function-bodies",
+      "-Xfrontend",
+      "-experimental-allow-module-with-compiler-errors",
+      "-Xfrontend",
+      "-empty-abi-descriptor",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "clank",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
     ]
   },
   "targetDependencyMap" : {
     "Clank" : [
 
+    ],
+    "ClankPackageTests" : [
+      "ClankTests",
+      "Clank"
+    ],
+    "ClankTests" : [
+      "Clank"
     ]
   },
   "testDiscoveryCommands" : {
@@ -303,6 +694,10 @@
         {
           "kind" : "file",
           "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AccelerometerMonitor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Sources/Clank/AmplitudeWindow.swift"
         },
         {
           "kind" : "file",
@@ -350,6 +745,46 @@
         }
       ],
       "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/Clank.build/sources"
+    },
+    "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankPackageTests.build/sources"
+    },
+    "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AmplitudeWindowTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/AudioPlayerTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SlapDetectorTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/micz/__DEV__/Clank/Tests/ClankTests/SmokeTests.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/ClankTests.build/sources"
     },
     "/Users/micz/__DEV__/Clank/.build/index-build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
       "alwaysOutOfDate" : true,
