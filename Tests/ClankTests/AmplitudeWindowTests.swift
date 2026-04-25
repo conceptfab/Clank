@@ -8,7 +8,7 @@ final class AmplitudeWindowTests: XCTestCase {
         window.push(2)
         window.push(3)
         window.push(4)
-        XCTAssertEqual(window.snapshot().sorted(), [2, 3, 4])
+        XCTAssertEqual(window.snapshot(), [2, 3, 4])
     }
 
     func test_medianAndMAD_matchNaiveImplementation() {
