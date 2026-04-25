@@ -29,7 +29,6 @@ final class AccelerometerMonitor {
 
     private let reportBufferSize = 4096
     private let imuReportLength = 22
-    private let imuDecimation = 8
     private let imuDataOffset = 6
     private let accelScale = 65536.0
     private let pageVendor = 0xFF00
@@ -42,11 +41,18 @@ final class AccelerometerMonitor {
     private var thread: Thread?
     private var isRunning = false
     private var registrations: [HIDRegistration] = []
-    private var decimation = 0
     private var lastLidAngle: Double?
+    private var sensorRunLoop: CFRunLoop?
 
     init(settingsProvider: @escaping () -> AppSettings = { SettingsStore.shared.settings }) {
         detector = SlapDetector(settingsProvider: settingsProvider)
+        NotificationCenter.default.addObserver(
+            forName: SettingsStore.changedNotification,
+            object: nil,
+            queue: nil
+        ) { [weak detector] _ in
+            detector?.refreshSettings()
+        }
     }
 
     func start() throws {
@@ -78,19 +84,23 @@ final class AccelerometerMonitor {
     }
 
     func stop() {
+        guard isRunning else { return }
         isRunning = false
+        if let loop = sensorRunLoop {
+            CFRunLoopStop(loop)
+        }
     }
 
     private func run(semaphore: DispatchSemaphore) throws {
         try wakeSPUDrivers()
         try registerSensors()
+        sensorRunLoop = CFRunLoopGetCurrent()
         semaphore.signal()
 
-        while isRunning {
-            CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.5, true)
-        }
+        CFRunLoopRun()
 
         registrations.removeAll()
+        sensorRunLoop = nil
     }
 
     private func wakeSPUDrivers() throws {
@@ -112,7 +122,7 @@ final class AccelerometerMonitor {
 
             setRegistryInt32(service, key: "SensorPropertyReportingState", value: 1)
             setRegistryInt32(service, key: "SensorPropertyPowerState", value: 1)
-            setRegistryInt32(service, key: "ReportInterval", value: 1000)
+            setRegistryInt32(service, key: "ReportInterval", value: 8000)
         }
     }
 
@@ -190,10 +200,6 @@ final class AccelerometerMonitor {
         }
         guard kind == .accelerometer else { return }
         guard length == imuReportLength else { return }
-
-        decimation += 1
-        guard decimation >= imuDecimation else { return }
-        decimation = 0
 
         let data = UnsafeBufferPointer(start: report, count: Int(length))
         let rawX = readInt32LE(data, offset: imuDataOffset)

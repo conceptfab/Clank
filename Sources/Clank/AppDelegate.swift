@@ -43,6 +43,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.handle(event)
         }
         startMonitoring()
+        preloadConfiguredSounds()
+        NotificationCenter.default.addObserver(
+            forName: SettingsStore.changedNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.preloadConfiguredSounds()
+        }
     }
 
     private func configureStatusItem() {
@@ -281,6 +289,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         suppressSensorFeedback()
         player.play(url: url, volume: settings.soundVolume)
         lastEventItem.title = String(format: "Ostatni pomiar: %.4fg, poziom %d/5", amplitude, level + 1)
+    }
+
+    private func preloadConfiguredSounds() {
+        let settings = settingsStore.settings
+        var urls: [URL] = []
+        if !settings.singleSoundPath.isEmpty {
+            urls.append(URL(fileURLWithPath: settings.singleSoundPath))
+        }
+        urls.append(contentsOf: settings.scaledSoundPaths
+            .filter { !$0.isEmpty }
+            .map { URL(fileURLWithPath: $0) })
+        if settings.lidSoundEnabled, !settings.lidSoundPath.isEmpty {
+            urls.append(URL(fileURLWithPath: settings.lidSoundPath))
+        }
+        urls.append(contentsOf: SettingsStore.bundledPainSounds())
+        player.preload(urls)
     }
 
     private func handle(_ event: LidAngleEvent) {
