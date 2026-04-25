@@ -31,6 +31,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let slapPeakWindow: TimeInterval = 0.16
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if let image = appIconImage() {
+            NSApplication.shared.applicationIconImage = image
+        }
         configureStatusItem()
         rebuildMenu()
         monitor.onEvent = { [weak self] event in
@@ -45,14 +48,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func configureStatusItem() {
         if let button = statusItem.button {
             statusItem.length = 28
-            button.image = menuBarImage()
+            button.image = appIconImage(size: NSSize(width: 18, height: 18)) ?? fallbackMenuBarImage()
             button.imagePosition = .imageOnly
             button.title = ""
             button.toolTip = "Clank"
         }
     }
 
-    private func menuBarImage() -> NSImage {
+    private func appIconImage(size: NSSize? = nil) -> NSImage? {
+        guard let url = Bundle.module.url(forResource: "icon", withExtension: "png"),
+              let image = NSImage(contentsOf: url) else {
+            return nil
+        }
+
+        if let size {
+            image.size = size
+        }
+        image.isTemplate = false
+        image.accessibilityDescription = "Clank"
+        return image
+    }
+
+    private func fallbackMenuBarImage() -> NSImage {
         let size = NSSize(width: 18, height: 18)
         let image = NSImage(size: size)
 

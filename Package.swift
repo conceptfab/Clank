@@ -14,7 +14,9 @@ let package = Package(
         .executableTarget(
             name: "Clank",
             resources: [
-                .copy("Resources/audio")
+                .copy("Resources/audio"),
+                .copy("Resources/icon.png"),
+                .copy("Resources/AppIcon.icns")
             ],
             linkerSettings: [
                 .linkedFramework("AppKit"),
