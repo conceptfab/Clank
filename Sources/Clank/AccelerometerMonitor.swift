@@ -44,6 +44,7 @@ final class AccelerometerMonitor {
     private var registrations: [HIDRegistration] = []
     private var decimation = 0
     private var lastLidAngle: Double?
+    private var sensorRunLoop: CFRunLoop?
 
     init(settingsProvider: @escaping () -> AppSettings = { SettingsStore.shared.settings }) {
         detector = SlapDetector(settingsProvider: settingsProvider)
@@ -85,19 +86,23 @@ final class AccelerometerMonitor {
     }
 
     func stop() {
+        guard isRunning else { return }
         isRunning = false
+        if let loop = sensorRunLoop {
+            CFRunLoopStop(loop)
+        }
     }
 
     private func run(semaphore: DispatchSemaphore) throws {
         try wakeSPUDrivers()
         try registerSensors()
+        sensorRunLoop = CFRunLoopGetCurrent()
         semaphore.signal()
 
-        while isRunning {
-            CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 0.5, true)
-        }
+        CFRunLoopRun()
 
         registrations.removeAll()
+        sensorRunLoop = nil
     }
 
     private func wakeSPUDrivers() throws {
