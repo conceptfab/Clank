@@ -20,6 +20,7 @@ struct LidAngleEvent {
 
 final class SlapDetector {
     private let settingsProvider: () -> AppSettings
+    private var cachedSettings: AppSettings
 
     private var hpReady = false
     private var previousRaw = AccelSample(x: 0, y: 0, z: 0)
@@ -35,7 +36,10 @@ final class SlapDetector {
 
     init(settingsProvider: @escaping () -> AppSettings) {
         self.settingsProvider = settingsProvider
+        self.cachedSettings = settingsProvider()
     }
+
+    func refreshSettings() { cachedSettings = settingsProvider() }
 
     func process(_ sample: AccelSample, at date: Date = Date()) -> SlapEvent? {
         sampleCount += 1
@@ -56,7 +60,7 @@ final class SlapDetector {
         let amplitude = sqrt(hx * hx + hy * hy + hz * hz)
         updateBaselines(amplitude)
 
-        let settings = settingsProvider()
+        let settings = cachedSettings
         let elapsed = date.timeIntervalSince(lastEvent) * 1000.0
         guard elapsed >= Double(settings.cooldownMilliseconds) else { return nil }
         guard amplitude >= settings.minAmplitude else { return nil }

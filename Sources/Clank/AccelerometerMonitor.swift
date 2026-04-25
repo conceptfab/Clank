@@ -47,6 +47,13 @@ final class AccelerometerMonitor {
 
     init(settingsProvider: @escaping () -> AppSettings = { SettingsStore.shared.settings }) {
         detector = SlapDetector(settingsProvider: settingsProvider)
+        NotificationCenter.default.addObserver(
+            forName: SettingsStore.changedNotification,
+            object: nil,
+            queue: nil
+        ) { [weak detector] _ in
+            detector?.refreshSettings()
+        }
     }
 
     func start() throws {
