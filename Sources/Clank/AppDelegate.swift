@@ -25,6 +25,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var ignoreSensorEventsUntil = Date.distantPast
     private var pendingSlapPeakAmplitude: Double?
     private var pendingSlapPlayback: DispatchWorkItem?
+    private var pendingLidFade: DispatchWorkItem?
+    private var pendingLidMaxPlayback: DispatchWorkItem?
+    private var currentLidSoundURL: URL?
 
     private let selfNoiseGuard: TimeInterval = 2.0
     private let lidMotionContinuityWindow: TimeInterval = 0.8
@@ -199,6 +202,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         pendingSlapPlayback?.cancel()
         pendingSlapPlayback = nil
         pendingSlapPeakAmplitude = nil
+        pendingLidFade?.cancel()
+        pendingLidFade = nil
+        pendingLidMaxPlayback?.cancel()
+        pendingLidMaxPlayback = nil
+        currentLidSoundURL = nil
         isRunning = false
         refreshMenuState()
     }
@@ -304,7 +312,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             urls.append(URL(fileURLWithPath: settings.lidSoundPath))
         }
         urls.append(contentsOf: SettingsStore.bundledPainSounds())
+        urls.append(contentsOf: SettingsStore.bundledLidSounds())
         player.preload(urls)
+    }
+
+    private func startLidPlaybackTimers(url: URL, marginMs: Int, maxMs: Int) {
+        pendingLidFade?.cancel()
+        pendingLidMaxPlayback?.cancel()
+
+        currentLidSoundURL = url
+
+        let margin = DispatchWorkItem { [weak self] in self?.endLidPlayback(url: url) }
+        let maxPlay = DispatchWorkItem { [weak self] in self?.endLidPlayback(url: url) }
+        pendingLidFade = margin
+        pendingLidMaxPlayback = maxPlay
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(marginMs), execute: margin)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(maxMs), execute: maxPlay)
+    }
+
+    private func rescheduleLidMargin(url: URL, marginMs: Int) {
+        pendingLidFade?.cancel()
+        let work = DispatchWorkItem { [weak self] in self?.endLidPlayback(url: url) }
+        pendingLidFade = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(marginMs), execute: work)
+    }
+
+    private func endLidPlayback(url: URL) {
+        pendingLidFade?.cancel()
+        pendingLidMaxPlayback?.cancel()
+        pendingLidFade = nil
+        pendingLidMaxPlayback = nil
+        currentLidSoundURL = nil
+        player.fadeOutAndStop(url: url, fadeDuration: 0.1)
     }
 
     private func handle(_ event: LidAngleEvent) {
@@ -318,6 +358,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let settings = settingsStore.settings
         guard settings.lidSoundEnabled else { return }
+
+        if let activeURL = currentLidSoundURL {
+            player.cancelFade(url: activeURL, restoreVolume: Float(settings.soundVolume))
+            rescheduleLidMargin(url: activeURL, marginMs: settings.lidStopMarginMilliseconds)
+        }
 
         let now = Date()
         guard let previousAngle = lidLastAngle else {
@@ -356,6 +401,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         lastLidSoundTime = Date()
         suppressSensorFeedback()
         player.play(url: url, volume: settings.soundVolume)
+        startLidPlaybackTimers(
+            url: url,
+            marginMs: settings.lidStopMarginMilliseconds,
+            maxMs: settings.lidMaxPlaybackMilliseconds
+        )
         lastEventItem.title = String(format: "Kat klapy: %.0f deg, zmiana %.0f deg", event.angle, accumulatedDelta)
     }
 
