@@ -30,7 +30,7 @@ final class SlapDetector {
     private var cusumPos = 0.0
     private var cusumNeg = 0.0
     private var cusumMean = 0.0
-    private var peakBuffer: [Double] = []
+    private let peakWindow = AmplitudeWindow(capacity: 200)
     private var lastEvent = Date.distantPast
     private var sampleCount = 0
 
@@ -83,10 +83,7 @@ final class SlapDetector {
         cusumPos = max(0, cusumPos + amplitude - cusumMean - 0.0005)
         cusumNeg = max(0, cusumNeg - amplitude + cusumMean - 0.0005)
 
-        peakBuffer.append(amplitude)
-        if peakBuffer.count > 200 {
-            peakBuffer.removeFirst(peakBuffer.count - 200)
-        }
+        peakWindow.push(amplitude)
     }
 
     private func shouldTrigger(_ amplitude: Double) -> Bool {
@@ -101,15 +98,12 @@ final class SlapDetector {
             return true
         }
 
-        guard sampleCount % 10 == 0, peakBuffer.count >= 50 else {
+        guard sampleCount % 10 == 0, peakWindow.count >= 50 else {
             return amplitude > 0.12
         }
 
-        let sorted = peakBuffer.sorted()
-        let median = sorted[sorted.count / 2]
-        let deviations = sorted.map { abs($0 - median) }.sorted()
-        let mad = deviations[deviations.count / 2]
-        let sigma = 1.4826 * mad + 1e-30
-        return abs(amplitude - median) / sigma > 2.0
+        let stats = peakWindow.medianAndMAD()
+        let sigma = 1.4826 * stats.mad + 1e-30
+        return abs(amplitude - stats.median) / sigma > 2.0
     }
 }
