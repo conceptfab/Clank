@@ -6,6 +6,8 @@
   "bearer_methods_supported": [
     "header"
   ],
-  "scopes_supported": [],
+  "scopes_supported": [
+    "read"
+  ],
   "resource_documentation": "https://clink.conceptfab.com/"
 }

@@ -11,8 +11,8 @@ Use this skill when an agent needs the canonical Clank website links and static 
 
 - Website: https://clink.conceptfab.com/
 - Download: https://github.com/conceptfab/Clank/releases/latest
-- Source: https://github.com/conceptfab/Clank
-- Install guide: https://github.com/conceptfab/Clank/blob/main/INSTALL.md
+- Source: https://github.com/conceptfab/Clank/releases
+- Install guide: https://github.com/conceptfab/Clank/releases
 - Support: https://www.buymeacoffee.com/conceptfab
 
 ## Discovery Resources

@@ -107,14 +107,14 @@ section { position: relative; padding: 80px 0; }
 }
 .brand {
   font-family: var(--pop);
-  font-size: 38px;
+  font-size: 52px;
   letter-spacing: -0.02em;
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 12px;
   transform: rotate(-3deg);
 }
 .brand-mark {
-  width: 56px;
-  height: 56px;
+  width: 76px;
+  height: 76px;
   border: 3px solid var(--ink);
   box-shadow: 4px 4px 0 var(--ink);
   display: inline-block;
@@ -154,7 +154,37 @@ section { position: relative; padding: 80px 0; }
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-@media (max-width: 720px) { .menu-links a:not(.cta):not(.bmc) { display: none; } }
+@media (max-width: 720px) {
+  .menu-links a:not(.cta):not(.bmc) { display: none; }
+  .brand {
+    font-size: 42px;
+    gap: 10px;
+  }
+  .brand-mark {
+    width: 60px;
+    height: 60px;
+  }
+}
+@media (max-width: 480px) {
+  .nav {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 0 12px;
+  }
+  .brand {
+    font-size: 36px;
+    gap: 8px;
+  }
+  .brand-mark {
+    width: 48px;
+    height: 48px;
+  }
+  .menu-links {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+}
 
 /* ===== Hero ===== */
 .hero {
@@ -218,6 +248,16 @@ section { position: relative; padding: 80px 0; }
 .big-btn:hover { transform: translate(-3px,-3px); box-shadow: 11px 11px 0 var(--ink); background: var(--pink); color: #fff; }
 .big-btn:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--ink); }
 
+.big-btn.pink {
+  background: var(--pink);
+  color: #fff;
+}
+.big-btn.pink:hover {
+  background: var(--blue);
+  color: var(--ink);
+}
+
+
 .ghost-btn {
   font-family: var(--mono);
   font-weight: 700;
@@ -277,8 +317,7 @@ section { position: relative; padding: 80px 0; }
 .sticker.s8 { bottom: 4%; right: 28%; transform: rotate(4deg); background: var(--paper); font-size: 18px; }
 
 @media (max-width: 820px) {
-  .sticker { font-size: 16px; padding: 6px 12px; }
-  .sticker.s1, .sticker.s2, .sticker.s5, .sticker.s6 { display: none; }
+  .sticker { display: none !important; }
 }
 
 /* ===== Mascot row ===== */
@@ -675,7 +714,7 @@ footer {
 <div class="wrap">
   <div class="nav">
     <a class="brand" href="#">
-      <img class="brand-mark" src="favicon.webp" alt="Clank icon" width="56" height="56" />
+      <img class="brand-mark" src="favicon.webp" alt="Clank icon" width="76" height="76" />
       CLANK
     </a>
     <div class="menu-links">
@@ -722,8 +761,7 @@ footer {
     </div>
 
     <div class="hero-cta">
-      <a class="big-btn" href="https://github.com/conceptfab/Clank/releases">DOWNLOAD ↓ <span style="font-size:0.6em;">3.2 MB</span></a>
-      <a class="ghost-btn" href="https://github.com/conceptfab/Clank">github →</a>
+      <a class="big-btn" href="https://github.com/conceptfab/Clank/releases">DOWNLOAD ON GITHUB ↓ <span style="font-size:0.6em;">3.2 MB</span></a>
       <a class="coffee-btn" href="https://www.buymeacoffee.com/conceptfab" target="_blank" rel="noopener" aria-label="Buy Me a Coffee">
         <img src="buy-me-a-coffee.webp" alt="Buy Me a Coffee" width="217" height="60" />
       </a>
@@ -927,11 +965,15 @@ footer {
       </div>
     </div>
 
+    <div class="hero-cta" style="margin-top:32px;">
+      <a class="big-btn pink" href="https://github.com/conceptfab/Clank/releases">DOWNLOAD ON GITHUB ↓ <span style="font-size:0.6em;">3.2 MB</span></a>
+    </div>
+
     <aside class="warn-box" role="note">
       <div class="icon">!</div>
       <div>
         <h4>NOT SIGNED BY APPLE!</h4>
-        <p>Gatekeeper will warn you the first time. Right-click the app, choose <strong style="color:var(--lime)">Open</strong>, and confirm once. After that he's family. Full instructions are in the <a href="https://github.com/conceptfab/Clank/blob/main/INSTALL.md">install guide</a>.</p>
+        <p>Gatekeeper will warn you the first time. Right-click the app, choose <strong style="color:var(--lime)">Open</strong>, and confirm once. After that he's family. Full instructions are in the <a href="https://github.com/conceptfab/Clank/releases">install guide</a>.</p>
       </div>
     </aside>
   </div>
@@ -943,8 +985,8 @@ footer {
     <div class="foot-brand">CLANK!</div>
     <div class="foot-info">
       Made by <strong>ConceptFab</strong> · macOS Apple Silicon · v1.0.1<br/>
-      <a href="https://github.com/conceptfab/Clank">GitHub</a>
-      <a href="https://github.com/conceptfab/Clank/blob/main/LICENSE">MIT</a>
+      <a href="https://github.com/conceptfab/Clank/releases">GitHub</a>
+      <a href="https://github.com/conceptfab/Clank/releases">MIT</a>
       <a href="mailto:hello@conceptfab.com">Email</a>
       <a href="https://www.buymeacoffee.com/conceptfab" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </div>
@@ -1053,8 +1095,8 @@ footer {
       execute: async () => ({
         website: 'https://clink.conceptfab.com/',
         download: 'https://github.com/conceptfab/Clank/releases',
-        source: 'https://github.com/conceptfab/Clank',
-        installGuide: 'https://github.com/conceptfab/Clank/blob/main/INSTALL.md',
+        source: 'https://github.com/conceptfab/Clank/releases',
+        installGuide: 'https://github.com/conceptfab/Clank/releases',
         support: 'https://www.buymeacoffee.com/conceptfab'
       })
     },

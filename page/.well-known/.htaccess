@@ -7,3 +7,7 @@ AddType application/json .json
 <FilesMatch "^(openid-configuration|oauth-authorization-server|oauth-protected-resource|oauth-not-supported)$">
   ForceType application/json
 </FilesMatch>
+
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
