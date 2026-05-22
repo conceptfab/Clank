@@ -46,15 +46,11 @@ if [[ ! -d "${APP_PATH}" ]]; then
 fi
 
 SRC_BIN="${APP_PATH}/Contents/MacOS/Clank"
-SRC_TEMPLATE="${APP_PATH}/Contents/Resources/Clank_Clank.bundle/Contents/Resources/dev.conceptfab.clank.sensor-helper.plist.template"
+SRC_TEMPLATE="$(find "${APP_PATH}" -name 'dev.conceptfab.clank.sensor-helper.plist.template' -type f -print -quit 2>/dev/null || true)"
 
 if [[ ! -f "${SRC_BIN}" ]]; then
     echo "blad: brak binarki w ${SRC_BIN}" >&2
     exit 1
-fi
-if [[ ! -f "${SRC_TEMPLATE}" ]]; then
-    # SPM moze umiescic bundle w innym miejscu — sprobuj alternatywnej sciezki
-    SRC_TEMPLATE="${APP_PATH}/Clank_Clank.bundle/Contents/Resources/dev.conceptfab.clank.sensor-helper.plist.template"
 fi
 if [[ ! -f "${SRC_TEMPLATE}" ]]; then
     echo "blad: nie znaleziono pliku plist template w bundle aplikacji" >&2
