@@ -1,7 +1,7 @@
 {
-  "resource": "https://clink.conceptfab.com",
+  "resource": "https://clank.conceptfab.com",
   "authorization_servers": [
-    "https://clink.conceptfab.com"
+    "https://clank.conceptfab.com"
   ],
   "bearer_methods_supported": [
     "header"
@@ -9,5 +9,5 @@
   "scopes_supported": [
     "read"
   ],
-  "resource_documentation": "https://clink.conceptfab.com/"
+  "resource_documentation": "https://clank.conceptfab.com/"
 }

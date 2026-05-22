@@ -170,7 +170,7 @@ enum L {
     static var aboutAuthor: String { t("Author", "Autor") }
     static var aboutAuthorName: String { "conceptfab.com" }
     static var aboutWebsite: String { t("Website", "Strona") }
-    static var aboutWebsiteName: String { "clink.conceptfab.com" }
+    static var aboutWebsiteName: String { "clank.conceptfab.com" }
     static var aboutIcons: String { t("Icons", "Ikony") }
     static var aboutIconsCredit: String { "MW Coffee" }
     static var aboutSupport: String { "Buy Me a Coffee" }

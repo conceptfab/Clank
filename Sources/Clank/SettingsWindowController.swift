@@ -527,7 +527,7 @@ private struct AboutClankView: View {
             VStack(alignment: .leading, spacing: 10) {
                 AboutRow(title: L.aboutVersion, value: versionString)
                 AboutLinkRow(title: L.aboutAuthor, label: L.aboutAuthorName, url: URL(string: "https://conceptfab.com")!)
-                AboutLinkRow(title: L.aboutWebsite, label: L.aboutWebsiteName, url: URL(string: "https://clink.conceptfab.com")!)
+                AboutLinkRow(title: L.aboutWebsite, label: L.aboutWebsiteName, url: URL(string: "https://clank.conceptfab.com")!)
                 AboutRow(title: L.aboutIcons, value: L.aboutIconsCredit)
                 AboutRow(title: L.aboutHelper, value: HelperInstaller.isInstalled ? L.aboutHelperInstalled : L.aboutHelperNotInstalled)
                 AboutRow(title: L.aboutPlatform, value: L.aboutPlatformValue)

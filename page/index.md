@@ -1,7 +1,7 @@
 ---
 title: Clank
 description: A tiny menu-bar app that makes your MacBook scream when you touch it.
-canonical: https://clink.conceptfab.com/
+canonical: https://clank.conceptfab.com/
 content-signal: ai-train=no, search=yes, ai-input=no
 ---
 
@@ -31,7 +31,7 @@ Clank is a tiny free macOS menu-bar app for Apple Silicon Macs. It plays short v
 
 ## Links
 
-- Website: https://clink.conceptfab.com/
+- Website: https://clank.conceptfab.com/
 - Author: https://conceptfab.com/
 - GitHub: https://github.com/conceptfab/Clank/releases
 - License: https://github.com/conceptfab/Clank/releases

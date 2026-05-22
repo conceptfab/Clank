@@ -1,10 +1,10 @@
 {
-  "issuer": "https://clink.conceptfab.com",
-  "authorization_endpoint": "https://clink.conceptfab.com/.well-known/oauth-not-supported",
-  "token_endpoint": "https://clink.conceptfab.com/.well-known/oauth-not-supported",
-  "jwks_uri": "https://clink.conceptfab.com/.well-known/jwks.json",
+  "issuer": "https://clank.conceptfab.com",
+  "authorization_endpoint": "https://clank.conceptfab.com/.well-known/oauth-not-supported",
+  "token_endpoint": "https://clank.conceptfab.com/.well-known/oauth-not-supported",
+  "jwks_uri": "https://clank.conceptfab.com/.well-known/jwks.json",
   "grant_types_supported": [],
   "response_types_supported": [],
   "scopes_supported": [],
-  "service_documentation": "https://clink.conceptfab.com/"
+  "service_documentation": "https://clank.conceptfab.com/"
 }

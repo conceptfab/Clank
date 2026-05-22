@@ -4,7 +4,7 @@ A tiny free macOS menu-bar app that makes your MacBook react when you touch it.
 Clank listens for small knocks and lid movement, then plays short sound effects
 through your speakers.
 
-Website: [clink.conceptfab.com](https://clink.conceptfab.com/)
+Website: [clank.conceptfab.com](https://clank.conceptfab.com/)
 
 Current version: `1.0.1`
 
@@ -86,7 +86,7 @@ scripts/build-test-app.sh
 
 ## Links
 
-- Website: [clink.conceptfab.com](https://clink.conceptfab.com/)
+- Website: [clank.conceptfab.com](https://clank.conceptfab.com/)
 - Author: [conceptfab.com](https://conceptfab.com/)
 - Source: [github.com/conceptfab/clank](https://github.com/conceptfab/clank)
 - Install guide: [INSTALL.md](INSTALL.md)

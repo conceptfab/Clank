@@ -5,7 +5,7 @@
   },
   "transport": {
     "type": "none",
-    "endpoint": "https://clink.conceptfab.com/",
+    "endpoint": "https://clank.conceptfab.com/",
     "description": "Static website only; no remote MCP transport is currently offered."
   },
   "capabilities": {
@@ -13,12 +13,12 @@
     "resources": [
       {
         "name": "homepage",
-        "uri": "https://clink.conceptfab.com/",
+        "uri": "https://clank.conceptfab.com/",
         "mimeType": "text/html"
       },
       {
         "name": "homepage-markdown",
-        "uri": "https://clink.conceptfab.com/index.md",
+        "uri": "https://clank.conceptfab.com/index.md",
         "mimeType": "text/markdown"
       }
     ],

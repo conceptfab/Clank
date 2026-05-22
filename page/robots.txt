@@ -50,4 +50,4 @@ User-agent: Applebot-Extended
 Disallow: /
 Content-Signal: ai-train=no, search=yes, ai-input=no
 
-Sitemap: https://clink.conceptfab.com/sitemap.xml
+Sitemap: https://clank.conceptfab.com/sitemap.xml

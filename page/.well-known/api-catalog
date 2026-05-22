@@ -1,22 +1,22 @@
 {
   "linkset": [
     {
-      "anchor": "https://clink.conceptfab.com/.well-known/api-catalog",
+      "anchor": "https://clank.conceptfab.com/.well-known/api-catalog",
       "service-desc": [
         {
-          "href": "https://clink.conceptfab.com/.well-known/openapi.json",
+          "href": "https://clank.conceptfab.com/.well-known/openapi.json",
           "type": "application/vnd.oai.openapi+json"
         }
       ],
       "service-doc": [
         {
-          "href": "https://clink.conceptfab.com/",
+          "href": "https://clank.conceptfab.com/",
           "type": "text/html"
         }
       ],
       "status": [
         {
-          "href": "https://clink.conceptfab.com/api/health.json",
+          "href": "https://clank.conceptfab.com/api/health.json",
           "type": "application/json"
         }
       ]

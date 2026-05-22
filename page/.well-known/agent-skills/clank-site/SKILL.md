@@ -9,7 +9,7 @@ Use this skill when an agent needs the canonical Clank website links and static 
 
 ## Canonical Links
 
-- Website: https://clink.conceptfab.com/
+- Website: https://clank.conceptfab.com/
 - Download: https://github.com/conceptfab/Clank/releases/latest
 - Source: https://github.com/conceptfab/Clank/releases
 - Install guide: https://github.com/conceptfab/Clank/releases
@@ -17,7 +17,7 @@ Use this skill when an agent needs the canonical Clank website links and static 
 
 ## Discovery Resources
 
-- Robots: https://clink.conceptfab.com/robots.txt
-- Sitemap: https://clink.conceptfab.com/sitemap.xml
-- Markdown homepage: https://clink.conceptfab.com/index.md
-- API catalog: https://clink.conceptfab.com/.well-known/api-catalog
+- Robots: https://clank.conceptfab.com/robots.txt
+- Sitemap: https://clank.conceptfab.com/sitemap.xml
+- Markdown homepage: https://clank.conceptfab.com/index.md
+- API catalog: https://clank.conceptfab.com/.well-known/api-catalog

@@ -5,8 +5,8 @@
       "name": "clank-site",
       "type": "skill-md",
       "description": "Discover Clank downloads, installation links, support links, and static site metadata.",
-      "url": "https://clink.conceptfab.com/.well-known/agent-skills/clank-site/SKILL.md",
-      "digest": "sha256:00ee3aca84db4c248822681dc9f940dcc86d5c28a57b1f9420da85ca510c3822"
+      "url": "https://clank.conceptfab.com/.well-known/agent-skills/clank-site/SKILL.md",
+      "digest": "sha256:ef20a6ca65b4ab0ff345658682a154e91a3508c9e0e235cbf7eb5fb94eec6c34"
     }
   ]
 }
