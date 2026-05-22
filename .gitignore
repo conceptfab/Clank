@@ -1,0 +1,14 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Makefile build output
+build/
+
+# Distribution artifacts
+dist/
+*.dmg
+*.zip
+
+# macOS Finder
+.DS_Store

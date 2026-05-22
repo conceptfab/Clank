@@ -14,6 +14,8 @@ struct AppSettings: Codable {
     var lidSoundPath: String
     var lidAngleThreshold: Double
     var lidSoundCooldownMilliseconds: Int
+    var lidStopMarginMilliseconds: Int
+    var lidMaxPlaybackMilliseconds: Int
     var minAmplitude: Double
     var cooldownMilliseconds: Int
     var maxScaleAmplitude: Double
@@ -27,6 +29,8 @@ struct AppSettings: Codable {
         lidSoundPath: String,
         lidAngleThreshold: Double,
         lidSoundCooldownMilliseconds: Int,
+        lidStopMarginMilliseconds: Int,
+        lidMaxPlaybackMilliseconds: Int,
         minAmplitude: Double,
         cooldownMilliseconds: Int,
         maxScaleAmplitude: Double
@@ -39,6 +43,8 @@ struct AppSettings: Codable {
         self.lidSoundPath = lidSoundPath
         self.lidAngleThreshold = lidAngleThreshold
         self.lidSoundCooldownMilliseconds = lidSoundCooldownMilliseconds
+        self.lidStopMarginMilliseconds = lidStopMarginMilliseconds
+        self.lidMaxPlaybackMilliseconds = lidMaxPlaybackMilliseconds
         self.minAmplitude = minAmplitude
         self.cooldownMilliseconds = cooldownMilliseconds
         self.maxScaleAmplitude = maxScaleAmplitude
@@ -54,6 +60,8 @@ struct AppSettings: Codable {
         lidSoundPath = try container.decodeIfPresent(String.self, forKey: .lidSoundPath) ?? ""
         lidAngleThreshold = try container.decodeIfPresent(Double.self, forKey: .lidAngleThreshold) ?? 4.0
         lidSoundCooldownMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidSoundCooldownMilliseconds) ?? 1200
+        lidStopMarginMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidStopMarginMilliseconds) ?? 2000
+        lidMaxPlaybackMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidMaxPlaybackMilliseconds) ?? 2000
         minAmplitude = try container.decode(Double.self, forKey: .minAmplitude)
         cooldownMilliseconds = try container.decode(Int.self, forKey: .cooldownMilliseconds)
         maxScaleAmplitude = try container.decode(Double.self, forKey: .maxScaleAmplitude)
@@ -97,6 +105,7 @@ final class SettingsStore {
             guard pain.indices.contains(index) else { return single }
             return pain[index].path
         }
+        let lid = bundledLidSounds().first?.path ?? ""
 
         return AppSettings(
             soundMode: .single,
@@ -104,9 +113,11 @@ final class SettingsStore {
             scaledSoundPaths: scaled,
             soundVolume: 1.0,
             lidSoundEnabled: false,
-            lidSoundPath: "",
+            lidSoundPath: lid,
             lidAngleThreshold: 4.0,
             lidSoundCooldownMilliseconds: 1200,
+            lidStopMarginMilliseconds: 2000,
+            lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: 0.05,
             cooldownMilliseconds: 750,
             maxScaleAmplitude: defaultMaxScaleAmplitude
@@ -130,14 +141,18 @@ final class SettingsStore {
                 copy.scaledSoundPaths[idx] = defaults.scaledSoundPaths[idx]
             }
         }
-        if copy.lidSoundEnabled && !fileExists(copy.lidSoundPath) {
-            copy.lidSoundEnabled = false
-            copy.lidSoundPath = ""
+        if !fileExists(copy.lidSoundPath) {
+            copy.lidSoundPath = defaults.lidSoundPath
+            if copy.lidSoundPath.isEmpty {
+                copy.lidSoundEnabled = false
+            }
         }
 
         copy.soundVolume = min(max(copy.soundVolume, 0.0), 1.0)
         copy.lidAngleThreshold = min(max(copy.lidAngleThreshold, 1.0), 45.0)
-        copy.lidSoundCooldownMilliseconds = max(copy.lidSoundCooldownMilliseconds, 250)
+        copy.lidSoundCooldownMilliseconds = min(max(copy.lidSoundCooldownMilliseconds, 100), 5000)
+        copy.lidStopMarginMilliseconds = min(max(copy.lidStopMarginMilliseconds, 50), 2000)
+        copy.lidMaxPlaybackMilliseconds = min(max(copy.lidMaxPlaybackMilliseconds, 500), 5000)
         copy.minAmplitude = min(max(copy.minAmplitude, 0.001), 1.0)
         if copy.maxScaleAmplitude >= 0.75 {
             copy.maxScaleAmplitude = defaultMaxScaleAmplitude
@@ -155,6 +170,14 @@ final class SettingsStore {
     static func bundledPainSounds() -> [URL] {
         (Bundle.module.urls(forResourcesWithExtension: "mp3", subdirectory: "audio/pain") ?? [])
             .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+    }
+
+    static func bundledLidSounds() -> [URL] {
+        let m4a = Bundle.module.urls(forResourcesWithExtension: "m4a", subdirectory: "audio/lid") ?? []
+        let mp3 = Bundle.module.urls(forResourcesWithExtension: "mp3", subdirectory: "audio/lid") ?? []
+        return (m4a + mp3).sorted {
+            $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending
+        }
     }
 }
 

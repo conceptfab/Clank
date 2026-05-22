@@ -1,28 +1,106 @@
 # Clank
 
 Native macOS/AppKit menu bar app for accelerometer-driven sound feedback.
+Apple Silicon only. macOS 13+.
 
-## Build
+> **Instalacja dla uzytkownikow koncowych:** patrz [INSTALL.md](INSTALL.md).
+> Ten plik to dokumentacja deweloperska.
+
+## Wymagania
+
+- macOS 13+
+- Apple Silicon (M1 / M2 / M3 / M4)
+- Swift 5.9+ (Xcode Command Line Tools)
+
+## Build z zrodel
 
 ```bash
-swift build -c release
+# Build debug
+swift build
+
+# Build release + bundle
 make bundle
+
+# Ad-hoc codesign
+make sign
+
+# Build DMG z dolaczonymi skryptami instalacyjnymi
+make release
 ```
 
-The app uses the Apple Silicon accelerometer path, so the sensor reader must run as root:
+Wynikowy DMG: `dist/Clank-<VERSION>.dmg`.
+
+## Architektura
+
+Aplikacja zlozona z dwoch procesow:
+
+1. **`Clank.app`** — proces uzytkownika (LSUIElement), GUI w pasku menu,
+   ustawienia, odtwarzanie dzwieku. Nie wymaga uprawnien root.
+
+2. **`clank-sensor-helper`** — proces root (LaunchDaemon), czyta akcelerometr
+   przez prywatne IOKit API. Instalowany jednorazowo do `/usr/local/libexec/`
+   przez `scripts/install-helper.sh`.
+
+Komunikacja: aplikacja zapisuje heartbeat (`/tmp/clank-helper.heartbeat`),
+helper monitoruje akcelerometr gdy heartbeat jest swiezy (<3s), zapisuje
+zdarzenia do `/tmp/clank-helper.events` (JSONL). Aplikacja odczytuje
+zdarzenia z offsetu.
+
+Helper jest instalowany przez `HelperInstaller` (NSAppleScript + `with
+administrator privileges`) bez konieczosci terminala — jeden natywny
+macOS password prompt przy pierwszym uruchomieniu aplikacji.
+
+## Tryby dzwiekow
+
+- **Jeden dzwiek**: kazde wykryte uderzenie odtwarza wybrany plik, bez wzgledu na amplitude
+- **Skala 5 stopni**: amplitude mapowana jest na 5 konfigurowalnych dzwiekow
+
+## Workflow deweloperski
+
+Helper mozna uruchomic lokalnie (bez instalacji LaunchDaemona) podajac
+flagi recznie:
 
 ```bash
-sudo .build/release/Clank
+sudo .build/release/Clank --sensor-helper \
+    --events-file /tmp/clank-helper.events \
+    --heartbeat-file /tmp/clank-helper.heartbeat
 ```
 
-For a packaged menu bar app:
+W innym terminalu uruchom aplikacje user-mode:
 
 ```bash
-make bundle
-sudo build/Clank.app/Contents/MacOS/Clank
+make run
 ```
 
-## Sound Modes
+Aby zainstalowac/odinstalowac LaunchDaemona lokalnie (workflow CI/dev,
+omija interaktywny prompt aplikacji):
 
-- **Jeden dzwiek**: every detected hit plays the selected sound, regardless of measured amplitude.
-- **Skala 5 stopni**: detected amplitude is mapped to five configurable sounds, from light movement to a strong hit.
+```bash
+./scripts/install-helper.sh /Applications/Clank.app
+./scripts/uninstall-helper.sh
+```
+
+Uzytkownik koncowy nie musi tych skryptow uzywac — aplikacja instaluje
+helpera sama przy pierwszym uruchomieniu (patrz `INSTALL.md`).
+
+## Testy
+
+```bash
+swift test
+```
+
+## Pliki kluczowe
+
+- `Sources/Clank/AppDelegate.swift` — entry point, status bar, menu
+- `Sources/Clank/AccelerometerMonitor.swift` — odczyt akcelerometru
+- `Sources/Clank/SensorHelperMain.swift` — entry point helpera (`--sensor-helper`)
+- `Sources/Clank/SensorHelperClient.swift` — IPC od strony aplikacji
+- `Sources/Clank/AudioPlayer.swift` — cache + fade-out
+- `Sources/Clank/SettingsWindowController.swift` — okno ustawien
+
+## Dystrybucja
+
+Aktualna wersja jest ad-hoc podpisana (`codesign --sign -`), bez notaryzacji.
+Dla dystrybucji prywatnej (znajomi). Pelne wydanie wymagaloby Apple Developer ID
++ notaryzacji — patrz `docs/superpowers/plans/2026-05-22-distribution-friends.md`
+dla zakresu pominietego.

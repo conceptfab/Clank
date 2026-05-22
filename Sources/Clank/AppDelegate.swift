@@ -1,9 +1,7 @@
 import AppKit
-import Darwin
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-    private let monitor = AccelerometerMonitor()
     private var helperClient: SensorHelperClient?
     private let player = AudioPlayer()
     private let settingsStore = SettingsStore.shared
@@ -25,6 +23,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var ignoreSensorEventsUntil = Date.distantPast
     private var pendingSlapPeakAmplitude: Double?
     private var pendingSlapPlayback: DispatchWorkItem?
+    private var pendingLidFade: DispatchWorkItem?
+    private var pendingLidMaxPlayback: DispatchWorkItem?
+    private var currentLidSoundURL: URL?
 
     private let selfNoiseGuard: TimeInterval = 2.0
     private let lidMotionContinuityWindow: TimeInterval = 0.8
@@ -36,12 +37,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         configureStatusItem()
         rebuildMenu()
-        monitor.onEvent = { [weak self] event in
-            self?.handle(event)
-        }
-        monitor.onLidAngleEvent = { [weak self] event in
-            self?.handle(event)
-        }
         startMonitoring()
         preloadConfiguredSounds()
         NotificationCenter.default.addObserver(
@@ -140,6 +135,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         modeItem.submenu = modeMenu
         menu.addItem(modeItem)
 
+        let helperItem = NSMenuItem(title: "Helper...", action: nil, keyEquivalent: "")
+        let helperMenu = NSMenu()
+
+        let reinstallHelperItem = NSMenuItem(title: HelperInstaller.isInstalled ? "Reinstaluj helpera..." : "Zainstaluj helpera...",
+                                             action: #selector(reinstallHelper),
+                                             keyEquivalent: "")
+        reinstallHelperItem.target = self
+        helperMenu.addItem(reinstallHelperItem)
+
+        let uninstallHelperItem = NSMenuItem(title: "Odinstaluj helpera...",
+                                             action: #selector(uninstallHelper),
+                                             keyEquivalent: "")
+        uninstallHelperItem.target = self
+        uninstallHelperItem.isEnabled = HelperInstaller.isInstalled
+        helperMenu.addItem(uninstallHelperItem)
+
+        helperItem.submenu = helperMenu
+        menu.addItem(helperItem)
+
         let settings = NSMenuItem(title: "Ustawienia...", action: #selector(openSettings), keyEquivalent: ",")
         settings.target = self
         menu.addItem(settings)
@@ -173,37 +187,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func startMonitoring() {
         guard !isRunning else { return }
-
-        if geteuid() != 0 {
-            startPrivilegedHelper()
-            return
-        }
-
-        do {
-            try monitor.start()
-            isRunning = true
-            lastError = nil
-        } catch {
-            isRunning = false
-            lastError = error.localizedDescription
-            showPermissionAlertIfNeeded(error)
-        }
-
-        refreshMenuState()
+        startPrivilegedHelper()
     }
 
     private func stopMonitoring() {
-        monitor.stop()
         helperClient?.stop()
         helperClient = nil
         pendingSlapPlayback?.cancel()
         pendingSlapPlayback = nil
         pendingSlapPeakAmplitude = nil
+        pendingLidFade?.cancel()
+        pendingLidFade = nil
+        pendingLidMaxPlayback?.cancel()
+        pendingLidMaxPlayback = nil
+        currentLidSoundURL = nil
         isRunning = false
         refreshMenuState()
     }
 
     private func startPrivilegedHelper() {
+        if !HelperInstaller.isInstalled {
+            if !promptInstallHelper() {
+                isRunning = false
+                lastError = "helper niezainstalowany"
+                refreshMenuState()
+                return
+            }
+        }
+
         let client = SensorHelperClient(settingsProvider: { SettingsStore.shared.settings })
         client.onEvent = { [weak self] event in
             self?.handle(event)
@@ -226,12 +237,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         refreshMenuState()
     }
 
-    private func showPermissionAlertIfNeeded(_ error: Error) {
-        guard geteuid() != 0 else {
-            showPermissionAlert(error)
-            return
+    private func promptInstallHelper() -> Bool {
+        let alert = NSAlert()
+        alert.messageText = "Clank wymaga instalacji helpera sensora"
+        alert.informativeText = "Aby czytac akcelerometr Clank potrzebuje jednorazowo zainstalowac proces w tle (LaunchDaemon). Pojawi sie standardowy systemowy monit o haslo administratora."
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Zainstaluj")
+        alert.addButton(withTitle: "Anuluj")
+        guard alert.runModal() == .alertFirstButtonReturn else {
+            return false
         }
-        showPermissionAlert(error)
+
+        do {
+            try HelperInstaller.install()
+            return true
+        } catch HelperInstallerError.userCancelled {
+            return false
+        } catch {
+            showPermissionAlert(error)
+            return false
+        }
     }
 
     private func showPermissionAlert(_ error: Error) {
@@ -304,7 +329,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             urls.append(URL(fileURLWithPath: settings.lidSoundPath))
         }
         urls.append(contentsOf: SettingsStore.bundledPainSounds())
+        urls.append(contentsOf: SettingsStore.bundledLidSounds())
         player.preload(urls)
+    }
+
+    private func startLidPlaybackTimers(url: URL, marginMs: Int, maxMs: Int) {
+        pendingLidFade?.cancel()
+        pendingLidMaxPlayback?.cancel()
+
+        currentLidSoundURL = url
+
+        let margin = DispatchWorkItem { [weak self] in self?.endLidPlayback(url: url) }
+        let maxPlay = DispatchWorkItem { [weak self] in self?.endLidPlayback(url: url) }
+        pendingLidFade = margin
+        pendingLidMaxPlayback = maxPlay
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(marginMs), execute: margin)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(maxMs), execute: maxPlay)
+    }
+
+    private func rescheduleLidMargin(url: URL, marginMs: Int) {
+        pendingLidFade?.cancel()
+        let work = DispatchWorkItem { [weak self] in self?.endLidPlayback(url: url) }
+        pendingLidFade = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(marginMs), execute: work)
+    }
+
+    private func endLidPlayback(url: URL) {
+        pendingLidFade?.cancel()
+        pendingLidMaxPlayback?.cancel()
+        pendingLidFade = nil
+        pendingLidMaxPlayback = nil
+        currentLidSoundURL = nil
+        player.fadeOutAndStop(url: url, fadeDuration: 0.1)
     }
 
     private func handle(_ event: LidAngleEvent) {
@@ -318,6 +375,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let settings = settingsStore.settings
         guard settings.lidSoundEnabled else { return }
+
+        if let activeURL = currentLidSoundURL {
+            player.cancelFade(url: activeURL, restoreVolume: Float(settings.soundVolume))
+            rescheduleLidMargin(url: activeURL, marginMs: settings.lidStopMarginMilliseconds)
+        }
 
         let now = Date()
         guard let previousAngle = lidLastAngle else {
@@ -356,6 +418,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         lastLidSoundTime = Date()
         suppressSensorFeedback()
         player.play(url: url, volume: settings.soundVolume)
+        startLidPlaybackTimers(
+            url: url,
+            marginMs: settings.lidStopMarginMilliseconds,
+            maxMs: settings.lidMaxPlaybackMilliseconds
+        )
         lastEventItem.title = String(format: "Kat klapy: %.0f deg, zmiana %.0f deg", event.angle, accumulatedDelta)
     }
 
@@ -393,6 +460,58 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let url = resolver.soundURL(for: 0.05) {
             player.play(url: url, volume: settingsStore.settings.soundVolume)
         }
+    }
+
+    @objc private func reinstallHelper() {
+        let wasRunning = isRunning
+        if wasRunning {
+            stopMonitoring()
+        }
+
+        do {
+            try HelperInstaller.install()
+            let alert = NSAlert()
+            alert.messageText = "Helper zainstalowany"
+            alert.informativeText = "Mozesz teraz wlaczyc detekcje."
+            alert.alertStyle = .informational
+            alert.runModal()
+        } catch HelperInstallerError.userCancelled {
+            // user cancelled — no-op
+        } catch {
+            showPermissionAlert(error)
+        }
+
+        rebuildMenu()
+        if wasRunning {
+            startMonitoring()
+        }
+    }
+
+    @objc private func uninstallHelper() {
+        let confirm = NSAlert()
+        confirm.messageText = "Odinstalowac helpera Clank?"
+        confirm.informativeText = "Detekcja akcelerometru przestanie dzialac do ponownej instalacji. Aplikacja nie zostanie odinstalowana."
+        confirm.alertStyle = .warning
+        confirm.addButton(withTitle: "Odinstaluj")
+        confirm.addButton(withTitle: "Anuluj")
+        guard confirm.runModal() == .alertFirstButtonReturn else { return }
+
+        if isRunning { stopMonitoring() }
+
+        do {
+            try HelperInstaller.uninstall()
+        } catch HelperInstallerError.userCancelled {
+            return
+        } catch {
+            showPermissionAlert(error)
+            return
+        }
+
+        rebuildMenu()
+        let done = NSAlert()
+        done.messageText = "Helper odinstalowany"
+        done.alertStyle = .informational
+        done.runModal()
     }
 
     @objc private func quit() {

@@ -18,13 +18,19 @@ final class SettingsWindowController: NSWindowController {
     private let lidSoundLabel = NSTextField(labelWithString: "")
     private let lidThresholdSlider = NSSlider(value: 4, minValue: 1, maxValue: 45, target: nil, action: nil)
     private let lidThresholdValue = NSTextField(labelWithString: "")
-    private let lidCooldownField = NSTextField(string: "1200")
+    private let lidCooldownSlider = NSSlider(value: 1200, minValue: 100, maxValue: 5000, target: nil, action: nil)
+    private let lidCooldownValue = NSTextField(labelWithString: "")
+    private let lidStopMarginSlider = NSSlider(value: 2000, minValue: 50, maxValue: 2000, target: nil, action: nil)
+    private let lidStopMarginValue = NSTextField(labelWithString: "")
+    private let lidMaxPlaybackSlider = NSSlider(value: 2000, minValue: 500, maxValue: 5000, target: nil, action: nil)
+    private let lidMaxPlaybackValue = NSTextField(labelWithString: "")
 
     private let sensitivitySlider = NSSlider(value: 0.05, minValue: 0.005, maxValue: 0.30, target: nil, action: nil)
     private let sensitivityValue = NSTextField(labelWithString: "")
     private let maxScaleSlider = NSSlider(value: 0.15, minValue: 0.06, maxValue: 0.50, target: nil, action: nil)
     private let maxScaleValue = NSTextField(labelWithString: "")
-    private let cooldownField = NSTextField(string: "750")
+    private let cooldownSlider = NSSlider(value: 750, minValue: 100, maxValue: 5000, target: nil, action: nil)
+    private let cooldownValue = NSTextField(labelWithString: "")
     private let autostartCheckbox = NSButton(checkboxWithTitle: "Uruchamiaj Clank przy logowaniu", target: nil, action: nil)
     private let visualizerView = SensorVisualizerView()
 
@@ -163,20 +169,27 @@ final class SettingsWindowController: NSWindowController {
 
         lidEnabledCheckbox.target = self
         lidEnabledCheckbox.action = #selector(lidEnabledChanged)
-        root.addArrangedSubview(section(title: "Czujnik klapy", rows: [
-            formRow("Akcja", lidEnabledCheckbox)
-        ]))
-
         lidThresholdSlider.target = self
         lidThresholdSlider.action = #selector(lidThresholdChanged)
-        lidCooldownField.alignment = .right
-        lidCooldownField.target = self
-        lidCooldownField.action = #selector(lidCooldownChanged)
-        root.addArrangedSubview(section(title: "Dzwiek", rows: [
+        lidCooldownSlider.target = self
+        lidCooldownSlider.action = #selector(lidCooldownChanged)
+        lidStopMarginSlider.target = self
+        lidStopMarginSlider.action = #selector(lidStopMarginChanged)
+        lidMaxPlaybackSlider.target = self
+        lidMaxPlaybackSlider.action = #selector(lidMaxPlaybackChanged)
+
+        root.addArrangedSubview(section(title: "Klapa", rows: [
+            formRow("Akcja", lidEnabledCheckbox),
             formRow("Plik", soundRow(label: lidSoundLabel, chooseAction: #selector(chooseLidSound), playAction: #selector(playLidSound))),
             formRow("Prog ruchu", sliderRow(slider: lidThresholdSlider, value: lidThresholdValue)),
-            formRow("Cooldown", numericRow(field: lidCooldownField, suffix: "ms"))
+            formRow("Cooldown", sliderRow(slider: lidCooldownSlider, value: lidCooldownValue)),
+            formRow("Margines stopu", sliderRow(slider: lidStopMarginSlider, value: lidStopMarginValue)),
+            formRow("Max dlugosc", sliderRow(slider: lidMaxPlaybackSlider, value: lidMaxPlaybackValue))
         ]))
+
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .vertical)
+        root.addArrangedSubview(spacer)
 
         return root
     }
@@ -188,14 +201,13 @@ final class SettingsWindowController: NSWindowController {
         sensitivitySlider.action = #selector(sensitivityChanged)
         maxScaleSlider.target = self
         maxScaleSlider.action = #selector(maxScaleChanged)
-        cooldownField.alignment = .right
-        cooldownField.target = self
-        cooldownField.action = #selector(cooldownChanged)
+        cooldownSlider.target = self
+        cooldownSlider.action = #selector(cooldownChanged)
 
         root.addArrangedSubview(section(title: "Pomiar uderzen", rows: [
             formRow("Czulosc minimum", sliderRow(slider: sensitivitySlider, value: sensitivityValue)),
             formRow("Gorny prog skali", sliderRow(slider: maxScaleSlider, value: maxScaleValue)),
-            formRow("Cooldown", numericRow(field: cooldownField, suffix: "ms"))
+            formRow("Cooldown", sliderRow(slider: cooldownSlider, value: cooldownValue))
         ]))
 
         visualizerView.widthAnchor.constraint(equalToConstant: 600).isActive = true
@@ -350,10 +362,12 @@ final class SettingsWindowController: NSWindowController {
         lidEnabledCheckbox.state = settings.lidSoundEnabled ? .on : .off
         lidSoundLabel.stringValue = displayName(settings.lidSoundPath)
         lidThresholdSlider.doubleValue = settings.lidAngleThreshold
-        lidCooldownField.stringValue = "\(settings.lidSoundCooldownMilliseconds)"
+        lidCooldownSlider.doubleValue = Double(settings.lidSoundCooldownMilliseconds)
+        lidStopMarginSlider.doubleValue = Double(settings.lidStopMarginMilliseconds)
+        lidMaxPlaybackSlider.doubleValue = Double(settings.lidMaxPlaybackMilliseconds)
         sensitivitySlider.doubleValue = settings.minAmplitude
         maxScaleSlider.doubleValue = settings.maxScaleAmplitude
-        cooldownField.stringValue = "\(settings.cooldownMilliseconds)"
+        cooldownSlider.doubleValue = Double(settings.cooldownMilliseconds)
         autostartCheckbox.state = AutostartManager.isEnabled ? .on : .off
         refreshValueLabels()
         refreshModeVisibility()
@@ -367,8 +381,12 @@ final class SettingsWindowController: NSWindowController {
     private func refreshValueLabels() {
         volumeValue.stringValue = "\(Int(volumeSlider.doubleValue.rounded()))%"
         lidThresholdValue.stringValue = "\(Int(lidThresholdSlider.doubleValue.rounded())) deg"
+        lidCooldownValue.stringValue = "\(Int(lidCooldownSlider.doubleValue.rounded())) ms"
+        lidStopMarginValue.stringValue = "\(Int(lidStopMarginSlider.doubleValue.rounded())) ms"
+        lidMaxPlaybackValue.stringValue = "\(Int(lidMaxPlaybackSlider.doubleValue.rounded())) ms"
         sensitivityValue.stringValue = String(format: "%.3fg", sensitivitySlider.doubleValue)
         maxScaleValue.stringValue = String(format: "%.2fg", maxScaleSlider.doubleValue)
+        cooldownValue.stringValue = "\(Int(cooldownSlider.doubleValue.rounded())) ms"
     }
 
     private func displayName(_ path: String) -> String {
@@ -406,6 +424,17 @@ final class SettingsWindowController: NSWindowController {
     }
 
     @objc private func lidCooldownChanged() {
+        refreshValueLabels()
+        saveSettings()
+    }
+
+    @objc private func lidStopMarginChanged() {
+        refreshValueLabels()
+        saveSettings()
+    }
+
+    @objc private func lidMaxPlaybackChanged() {
+        refreshValueLabels()
         saveSettings()
     }
 
@@ -426,6 +455,7 @@ final class SettingsWindowController: NSWindowController {
     }
 
     @objc private func cooldownChanged() {
+        refreshValueLabels()
         saveSettings()
     }
 
@@ -492,10 +522,12 @@ final class SettingsWindowController: NSWindowController {
         settings.soundVolume = volumeSlider.doubleValue / 100.0
         settings.lidSoundEnabled = lidEnabledCheckbox.state == .on
         settings.lidAngleThreshold = lidThresholdSlider.doubleValue
-        settings.lidSoundCooldownMilliseconds = max(Int(lidCooldownField.intValue), 250)
+        settings.lidSoundCooldownMilliseconds = Int(lidCooldownSlider.doubleValue)
+        settings.lidStopMarginMilliseconds = Int(lidStopMarginSlider.doubleValue)
+        settings.lidMaxPlaybackMilliseconds = Int(lidMaxPlaybackSlider.doubleValue)
         settings.minAmplitude = sensitivitySlider.doubleValue
         settings.maxScaleAmplitude = maxScaleSlider.doubleValue
-        settings.cooldownMilliseconds = max(Int(cooldownField.intValue), 100)
+        settings.cooldownMilliseconds = Int(cooldownSlider.doubleValue)
         store.save(settings)
     }
 

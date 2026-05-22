@@ -16,7 +16,8 @@ let package = Package(
             resources: [
                 .copy("Resources/audio"),
                 .copy("Resources/icon.png"),
-                .copy("Resources/AppIcon.icns")
+                .copy("Resources/AppIcon.icns"),
+                .copy("Resources/dev.conceptfab.clank.sensor-helper.plist.template")
             ],
             linkerSettings: [
                 .linkedFramework("AppKit"),

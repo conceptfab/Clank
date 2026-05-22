@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/micz/__DEV__/Clank-perf log -1 --oneline)",
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "Bash(python3 -c ' *)",
+      "Bash(swift build *)",
+      "Bash(make bundle *)",
+      "Bash(git -C /Users/micz/__DEV__/Clank ls-tree HEAD .build/)",
+      "Bash(git -C /Users/micz/__DEV__/Clank check-ignore .build/release)",
+      "Bash(git merge *)",
+      "Bash(git ls-tree *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git branch *)",
+      "Bash(git -C /Users/micz/__DEV__/Clank-perf status --short)"
+    ]
+  }
+}
