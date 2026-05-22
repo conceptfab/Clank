@@ -2,7 +2,6 @@ import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-    private let monitor = AccelerometerMonitor()
     private var helperClient: SensorHelperClient?
     private let player = AudioPlayer()
     private let settingsStore = SettingsStore.shared
@@ -38,12 +37,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         configureStatusItem()
         rebuildMenu()
-        monitor.onEvent = { [weak self] event in
-            self?.handle(event)
-        }
-        monitor.onLidAngleEvent = { [weak self] event in
-            self?.handle(event)
-        }
         startMonitoring()
         preloadConfiguredSounds()
         NotificationCenter.default.addObserver(
@@ -179,7 +172,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func stopMonitoring() {
-        monitor.stop()
         helperClient?.stop()
         helperClient = nil
         pendingSlapPlayback?.cancel()
