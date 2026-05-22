@@ -12,7 +12,7 @@ enum AutostartManagerError: LocalizedError {
 }
 
 enum AutostartManager {
-    private static let label = "dev.taigrr.clank.autostart"
+    private static let label = "dev.conceptfab.clank.autostart"
 
     private static var launchAgentsDirectory: URL {
         FileManager.default.homeDirectoryForCurrentUser
