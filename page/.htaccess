@@ -1,0 +1,34 @@
+Options -MultiViews
+DirectoryIndex index.html
+
+AddType text/plain .txt
+AddType application/xml .xml
+AddType application/json .json
+AddType text/markdown .md
+AddType image/webp .webp
+AddType audio/mpeg .mp3
+AddType audio/mp4 .m4a
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_ACCEPT} (^|,|;)[[:space:]]*text/markdown [NC]
+  RewriteRule ^$ index.md [L,T=text/markdown]
+
+  RewriteCond %{HTTP_ACCEPT} (^|,|;)[[:space:]]*text/markdown [NC]
+  RewriteRule ^index\.html$ index.md [L,T=text/markdown]
+</IfModule>
+
+<Files "index.md">
+  ForceType text/markdown
+</Files>
+
+<IfModule mod_headers.c>
+  <Files "index.md">
+    Header set x-markdown-tokens "245"
+    Header set Content-Signal "ai-train=no, search=yes, ai-input=no"
+  </Files>
+</IfModule>
+
+<Files "robots.txt">
+  ForceType text/plain
+</Files>

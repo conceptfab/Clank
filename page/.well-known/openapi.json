@@ -1,0 +1,39 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Clank Static Site Discovery API",
+    "version": "1.0.0",
+    "description": "Static discovery endpoints for the Clank landing page."
+  },
+  "servers": [
+    {
+      "url": "https://clink.conceptfab.com"
+    }
+  ],
+  "paths": {
+    "/api/health.json": {
+      "get": {
+        "summary": "Check static site health metadata",
+        "responses": {
+          "200": {
+            "description": "Static site health response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "service": { "type": "string" },
+                    "url": { "type": "string", "format": "uri" },
+                    "updated": { "type": "string", "format": "date" }
+                  },
+                  "required": ["status", "service", "url", "updated"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

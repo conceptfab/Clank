@@ -1037,6 +1037,76 @@ footer {
       setTimeout(()=> el.remove(), 850);
     });
   });
+
+  // WebMCP: expose simple site actions to browsers that implement navigator.modelContext.
+  const modelContext = navigator.modelContext;
+  if (!modelContext) return;
+
+  const controller = new AbortController();
+  window.addEventListener('pagehide', () => controller.abort(), { once: true });
+
+  const tools = [
+    {
+      name: 'get_clank_site_links',
+      description: 'Return canonical Clank website, download, source, install, and support links.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      execute: async () => ({
+        website: 'https://clink.conceptfab.com/',
+        download: 'https://github.com/conceptfab/clank/releases/latest',
+        source: 'https://github.com/conceptfab/clank',
+        installGuide: 'https://github.com/conceptfab/clank/blob/main/INSTALL.md',
+        support: 'https://www.buymeacoffee.com/conceptfab'
+      })
+    },
+    {
+      name: 'play_clank_sample',
+      description: 'Play a built-in Clank sound sample on the page.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          sample: {
+            type: 'string',
+            enum: ['ow', 'ouch', 'owwie', 'hey-that-hurts', 'ow-stop-it', 'door']
+          }
+        },
+        required: ['sample'],
+        additionalProperties: false
+      },
+      execute: async ({ sample }) => {
+        const samples = {
+          'ow': 'audio/pain/00_Ow.mp3',
+          'ouch': 'audio/pain/01_Ouch.mp3',
+          'owwie': 'audio/pain/02_Owwie.mp3',
+          'hey-that-hurts': 'audio/pain/03_Hey_that_hurts.mp3',
+          'ow-stop-it': 'audio/pain/04_Ow_stop_it.mp3',
+          'door': 'audio/lid/door.m4a'
+        };
+        play(samples[sample]);
+        return { played: sample };
+      }
+    },
+    {
+      name: 'open_clank_download',
+      description: 'Open the latest Clank GitHub release page in a new tab.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      execute: async () => {
+        window.open('https://github.com/conceptfab/clank/releases/latest', '_blank', 'noopener');
+        return { opened: 'https://github.com/conceptfab/clank/releases/latest' };
+      }
+    }
+  ];
+
+  const register = async (tool) => {
+    if (typeof modelContext.registerTool === 'function') {
+      await modelContext.registerTool(tool, { signal: controller.signal });
+    } else if (typeof modelContext.provideContext === 'function') {
+      await modelContext.provideContext({ tools: [tool] }, { signal: controller.signal });
+    }
+  };
+
+  tools.forEach(tool => {
+    register(tool).catch(() => {});
+  });
 })();
 </script>
 </body>

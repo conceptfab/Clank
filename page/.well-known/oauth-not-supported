@@ -1,0 +1,4 @@
+{
+  "error": "oauth_not_supported",
+  "error_description": "Clank's public static website does not expose protected OAuth APIs."
+}

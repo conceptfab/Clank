@@ -1,0 +1,7 @@
+{
+  "resource": "https://clink.conceptfab.com",
+  "authorization_servers": [],
+  "bearer_methods_supported": [],
+  "scopes_supported": [],
+  "resource_documentation": "https://clink.conceptfab.com/"
+}

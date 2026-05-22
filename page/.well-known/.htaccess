@@ -1,0 +1,9 @@
+AddType application/json .json
+
+<Files "api-catalog">
+  ForceType application/linkset+json
+</Files>
+
+<FilesMatch "^(openid-configuration|oauth-authorization-server|oauth-protected-resource|oauth-not-supported)$">
+  ForceType application/json
+</FilesMatch>

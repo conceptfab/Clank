@@ -1,0 +1,27 @@
+{
+  "serverInfo": {
+    "name": "Clank Website",
+    "version": "1.0.0"
+  },
+  "transport": {
+    "type": "none",
+    "endpoint": "https://clink.conceptfab.com/",
+    "description": "Static website only; no remote MCP transport is currently offered."
+  },
+  "capabilities": {
+    "tools": [],
+    "resources": [
+      {
+        "name": "homepage",
+        "uri": "https://clink.conceptfab.com/",
+        "mimeType": "text/html"
+      },
+      {
+        "name": "homepage-markdown",
+        "uri": "https://clink.conceptfab.com/index.md",
+        "mimeType": "text/markdown"
+      }
+    ],
+    "prompts": []
+  }
+}
