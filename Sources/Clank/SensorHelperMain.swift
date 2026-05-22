@@ -28,7 +28,8 @@ enum SensorHelperMain {
             lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: minAmplitude,
             cooldownMilliseconds: cooldown,
-            maxScaleAmplitude: 0.15
+            maxScaleAmplitude: 0.15,
+            language: .en
         )
 
         let monitor = AccelerometerMonitor(settingsProvider: { settings })

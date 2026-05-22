@@ -1,399 +1,161 @@
 import AppKit
+import SwiftUI
 import UniformTypeIdentifiers
 
 final class SettingsWindowController: NSWindowController {
-    private let store = SettingsStore.shared
-    private let player = AudioPlayer()
-
-    private let modeControl = NSSegmentedControl(labels: ["1 dzwiek", "5 dzwiekow"], trackingMode: .selectOne, target: nil, action: nil)
-    private let singleStack = NSStackView()
-    private let scaledStack = NSStackView()
-    private let singlePathLabel = NSTextField(labelWithString: "")
-    private var scaledPathLabels: [NSTextField] = []
-
-    private let volumeSlider = NSSlider(value: 100, minValue: 0, maxValue: 100, target: nil, action: nil)
-    private let volumeValue = NSTextField(labelWithString: "")
-
-    private let lidEnabledCheckbox = NSButton(checkboxWithTitle: "Odtwarzaj dzwiek przy ruchu klapy", target: nil, action: nil)
-    private let lidSoundLabel = NSTextField(labelWithString: "")
-    private let lidThresholdSlider = NSSlider(value: 4, minValue: 1, maxValue: 45, target: nil, action: nil)
-    private let lidThresholdValue = NSTextField(labelWithString: "")
-    private let lidCooldownSlider = NSSlider(value: 1200, minValue: 100, maxValue: 5000, target: nil, action: nil)
-    private let lidCooldownValue = NSTextField(labelWithString: "")
-    private let lidStopMarginSlider = NSSlider(value: 2000, minValue: 50, maxValue: 2000, target: nil, action: nil)
-    private let lidStopMarginValue = NSTextField(labelWithString: "")
-    private let lidMaxPlaybackSlider = NSSlider(value: 2000, minValue: 500, maxValue: 5000, target: nil, action: nil)
-    private let lidMaxPlaybackValue = NSTextField(labelWithString: "")
-
-    private let sensitivitySlider = NSSlider(value: 0.05, minValue: 0.005, maxValue: 0.30, target: nil, action: nil)
-    private let sensitivityValue = NSTextField(labelWithString: "")
-    private let maxScaleSlider = NSSlider(value: 0.15, minValue: 0.06, maxValue: 0.50, target: nil, action: nil)
-    private let maxScaleValue = NSTextField(labelWithString: "")
-    private let cooldownSlider = NSSlider(value: 750, minValue: 100, maxValue: 5000, target: nil, action: nil)
-    private let cooldownValue = NSTextField(labelWithString: "")
-    private let autostartCheckbox = NSButton(checkboxWithTitle: "Uruchamiaj Clank przy logowaniu", target: nil, action: nil)
-    private let visualizerView = SensorVisualizerView()
+    private let model = SettingsWindowModel()
 
     init() {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 700, height: 520),
+            contentRect: NSRect(x: 0, y: 0, width: 660, height: 620),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
         )
         window.title = "Clank"
-        window.subtitle = "Ustawienia"
-        window.toolbarStyle = .preference
+        window.subtitle = L.preferencesSubtitle
+        window.toolbarStyle = .unifiedCompact
+        window.titlebarAppearsTransparent = true
         window.center()
         super.init(window: window)
-        buildUI()
-        loadSettings()
-        NotificationCenter.default.addObserver(self, selector: #selector(slapMeasurement(_:)), name: .clankSlapMeasurement, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(lidMeasurement(_:)), name: .clankLidMeasurement, object: nil)
+
+        model.closeWindow = { [weak window] in
+            window?.close()
+        }
+        model.updateWindowSubtitle = { [weak window] in
+            window?.subtitle = L.preferencesSubtitle
+        }
+        window.contentView = NSHostingView(rootView: SettingsWindowView(model: model))
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private final class SettingsWindowModel: ObservableObject {
+    @Published var settings: AppSettings
+    @Published var slapAmplitude: Double?
+    @Published var slapLevel: Int?
+    @Published var lidAngle: Double?
+    @Published var lidDelta: Double?
+    @Published var errorMessage: String?
+
+    var closeWindow: (() -> Void)?
+    var updateWindowSubtitle: (() -> Void)?
+
+    private let store: SettingsStore
+    private let player = AudioPlayer()
+    private var isSaving = false
+
+    init(store: SettingsStore = .shared) {
+        self.store = store
+        settings = store.settings
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(settingsStoreChanged),
+            name: SettingsStore.changedNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(slapMeasurement(_:)),
+            name: .clankSlapMeasurement,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(lidMeasurement(_:)),
+            name: .clankLidMeasurement,
+            object: nil
+        )
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
-    private func buildUI() {
-        guard let contentView = window?.contentView else { return }
-
-        let visual = NSVisualEffectView()
-        visual.material = .windowBackground
-        visual.blendingMode = .behindWindow
-        visual.state = .active
-        visual.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(visual)
-
-        let root = NSStackView()
-        root.orientation = .vertical
-        root.alignment = .centerX
-        root.spacing = 14
-        root.edgeInsets = NSEdgeInsets(top: 18, left: 22, bottom: 18, right: 22)
-        root.translatesAutoresizingMaskIntoConstraints = false
-        visual.addSubview(root)
-
-        NSLayoutConstraint.activate([
-            visual.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            visual.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            visual.topAnchor.constraint(equalTo: contentView.topAnchor),
-            visual.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            root.leadingAnchor.constraint(equalTo: visual.leadingAnchor),
-            root.trailingAnchor.constraint(equalTo: visual.trailingAnchor),
-            root.topAnchor.constraint(equalTo: visual.topAnchor),
-            root.bottomAnchor.constraint(equalTo: visual.bottomAnchor)
-        ])
-
-        let tabView = NSTabView()
-        tabView.translatesAutoresizingMaskIntoConstraints = false
-        tabView.addTabViewItem(tab(label: "Dzwieki", view: soundsPane()))
-        tabView.addTabViewItem(tab(label: "Klapa", view: lidPane()))
-        tabView.addTabViewItem(tab(label: "Detekcja", view: detectionPane()))
-        tabView.widthAnchor.constraint(equalToConstant: 656).isActive = true
-        tabView.heightAnchor.constraint(equalToConstant: 420).isActive = true
-        root.addArrangedSubview(tabView)
-
-        let footer = NSStackView()
-        footer.orientation = .horizontal
-        footer.alignment = .centerY
-        footer.spacing = 10
-        footer.widthAnchor.constraint(equalToConstant: 656).isActive = true
-
-        let note = NSTextField(labelWithString: "Zmiany zapisuja sie automatycznie.")
-        note.textColor = .secondaryLabelColor
-        note.font = .systemFont(ofSize: 12)
-        footer.addArrangedSubview(note)
-
-        let spacer = NSView()
-        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        footer.addArrangedSubview(spacer)
-
-        let done = NSButton(title: "Gotowe", target: self, action: #selector(closeWindow))
-        done.bezelStyle = .rounded
-        done.keyEquivalent = "\r"
-        footer.addArrangedSubview(done)
-
-        root.addArrangedSubview(footer)
+    var singleSoundName: String {
+        displayName(settings.singleSoundPath)
     }
 
-    private func tab(label: String, view: NSView) -> NSTabViewItem {
-        let item = NSTabViewItem(identifier: label)
-        item.label = label
-        item.view = view
-        return item
+    var lidSoundName: String {
+        displayName(settings.lidSoundPath)
     }
 
-    private func soundsPane() -> NSView {
-        let root = paneStack()
+    func scaledSoundName(at index: Int) -> String {
+        guard settings.scaledSoundPaths.indices.contains(index) else { return L.notSet }
+        return displayName(settings.scaledSoundPaths[index])
+    }
 
-        modeControl.target = self
-        modeControl.action = #selector(modeChanged)
-        root.addArrangedSubview(section(title: "Tryb", rows: [
-            formRow("Tryb dzwiekow", modeControl)
-        ]))
+    func binding<Value>(_ keyPath: WritableKeyPath<AppSettings, Value>) -> Binding<Value> {
+        Binding(
+            get: { self.settings[keyPath: keyPath] },
+            set: { value in
+                self.settings[keyPath: keyPath] = value
+                self.save()
+            }
+        )
+    }
 
-        configureStack(singleStack)
-        singleStack.addArrangedSubview(soundRow(label: singlePathLabel, chooseAction: #selector(chooseSingleSound), playAction: #selector(playSingleSound)))
+    func chooseSingleSound() {
+        chooseAudioFile { url in
+            settings.singleSoundPath = url.path
+            save()
+        }
+    }
 
-        configureStack(scaledStack)
-        for idx in 0..<5 {
-            let label = fileLabel()
-            scaledPathLabels.append(label)
-            scaledStack.addArrangedSubview(formRow(
-                "Poziom \(idx + 1)",
-                soundRow(label: label, chooseAction: #selector(chooseScaledSound(_:)), playAction: #selector(playScaledSound(_:)), tag: idx)
-            ))
+    func chooseScaledSound(index: Int) {
+        chooseAudioFile { url in
+            guard settings.scaledSoundPaths.indices.contains(index) else { return }
+            settings.scaledSoundPaths[index] = url.path
+            save()
+        }
+    }
+
+    func chooseLidSound() {
+        chooseAudioFile { url in
+            settings.lidSoundPath = url.path
+            settings.lidSoundEnabled = true
+            save()
+        }
+    }
+
+    func playSingleSound() {
+        play(path: settings.singleSoundPath)
+    }
+
+    func playScaledSound(index: Int) {
+        guard settings.scaledSoundPaths.indices.contains(index) else { return }
+        play(path: settings.scaledSoundPaths[index])
+    }
+
+    func playLidSound() {
+        play(path: settings.lidSoundPath)
+    }
+
+    func setAutostart(_ enabled: Bool) {
+        do {
+            try AutostartManager.setEnabled(enabled)
+        } catch {
+            errorMessage = error.localizedDescription
+            objectWillChange.send()
+        }
+    }
+
+    func save() {
+        if settings.maxScaleAmplitude <= settings.minAmplitude {
+            settings.maxScaleAmplitude = settings.minAmplitude + 0.02
         }
 
-        root.addArrangedSubview(section(title: "Pliki audio", rows: [
-            formRow("Dzwiek", singleStack),
-            formRow("", scaledStack)
-        ]))
-
-        volumeSlider.target = self
-        volumeSlider.action = #selector(volumeChanged)
-        root.addArrangedSubview(section(title: "Odtwarzanie", rows: [
-            formRow("Glosnosc", sliderRow(slider: volumeSlider, value: volumeValue))
-        ]))
-
-        return root
+        isSaving = true
+        store.save(settings)
+        isSaving = false
+        updateWindowSubtitle?()
     }
 
-    private func lidPane() -> NSView {
-        let root = paneStack()
-
-        lidEnabledCheckbox.target = self
-        lidEnabledCheckbox.action = #selector(lidEnabledChanged)
-        lidThresholdSlider.target = self
-        lidThresholdSlider.action = #selector(lidThresholdChanged)
-        lidCooldownSlider.target = self
-        lidCooldownSlider.action = #selector(lidCooldownChanged)
-        lidStopMarginSlider.target = self
-        lidStopMarginSlider.action = #selector(lidStopMarginChanged)
-        lidMaxPlaybackSlider.target = self
-        lidMaxPlaybackSlider.action = #selector(lidMaxPlaybackChanged)
-
-        root.addArrangedSubview(section(title: "Klapa", rows: [
-            formRow("Akcja", lidEnabledCheckbox),
-            formRow("Plik", soundRow(label: lidSoundLabel, chooseAction: #selector(chooseLidSound), playAction: #selector(playLidSound))),
-            formRow("Prog ruchu", sliderRow(slider: lidThresholdSlider, value: lidThresholdValue)),
-            formRow("Cooldown", sliderRow(slider: lidCooldownSlider, value: lidCooldownValue)),
-            formRow("Margines stopu", sliderRow(slider: lidStopMarginSlider, value: lidStopMarginValue)),
-            formRow("Max dlugosc", sliderRow(slider: lidMaxPlaybackSlider, value: lidMaxPlaybackValue))
-        ]))
-
-        let spacer = NSView()
-        spacer.setContentHuggingPriority(.defaultLow, for: .vertical)
-        root.addArrangedSubview(spacer)
-
-        return root
-    }
-
-    private func detectionPane() -> NSView {
-        let root = paneStack()
-
-        sensitivitySlider.target = self
-        sensitivitySlider.action = #selector(sensitivityChanged)
-        maxScaleSlider.target = self
-        maxScaleSlider.action = #selector(maxScaleChanged)
-        cooldownSlider.target = self
-        cooldownSlider.action = #selector(cooldownChanged)
-
-        root.addArrangedSubview(section(title: "Pomiar uderzen", rows: [
-            formRow("Czulosc minimum", sliderRow(slider: sensitivitySlider, value: sensitivityValue)),
-            formRow("Gorny prog skali", sliderRow(slider: maxScaleSlider, value: maxScaleValue)),
-            formRow("Cooldown", sliderRow(slider: cooldownSlider, value: cooldownValue))
-        ]))
-
-        visualizerView.widthAnchor.constraint(equalToConstant: 600).isActive = true
-        visualizerView.heightAnchor.constraint(equalToConstant: 116).isActive = true
-        root.addArrangedSubview(section(title: "Podglad odczytow", rows: [
-            visualizerView
-        ]))
-
-        autostartCheckbox.target = self
-        autostartCheckbox.action = #selector(autostartChanged)
-        root.addArrangedSubview(section(title: "Aplikacja", rows: [
-            formRow("Autostart", autostartCheckbox)
-        ]))
-
-        return root
-    }
-
-    private func paneStack() -> NSStackView {
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .centerX
-        stack.spacing = 18
-        stack.edgeInsets = NSEdgeInsets(top: 18, left: 16, bottom: 14, right: 16)
-        return stack
-    }
-
-    private func section(title: String, rows: [NSView]) -> NSStackView {
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 8
-        stack.widthAnchor.constraint(equalToConstant: 600).isActive = true
-
-        let titleLabel = NSTextField(labelWithString: title)
-        titleLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        titleLabel.textColor = .secondaryLabelColor
-        titleLabel.widthAnchor.constraint(equalToConstant: 600).isActive = true
-        stack.addArrangedSubview(titleLabel)
-
-        let rowsStack = NSStackView()
-        rowsStack.orientation = .vertical
-        rowsStack.alignment = .leading
-        rowsStack.spacing = 8
-        rows.forEach { stack.addArrangedSubview($0) }
-        return stack
-    }
-
-    private func formRow(_ title: String, _ control: NSView) -> NSStackView {
-        let row = NSStackView()
-        row.orientation = .horizontal
-        row.alignment = .centerY
-        row.spacing = 14
-        row.widthAnchor.constraint(equalToConstant: 600).isActive = true
-
-        let label = NSTextField(labelWithString: title)
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .secondaryLabelColor
-        label.alignment = .right
-        label.widthAnchor.constraint(equalToConstant: 132).isActive = true
-        row.addArrangedSubview(label)
-
-        control.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        row.addArrangedSubview(control)
-
-        return row
-    }
-
-    private func soundRow(label: NSTextField, chooseAction: Selector, playAction: Selector, tag: Int = 0) -> NSStackView {
-        let row = NSStackView()
-        row.orientation = .horizontal
-        row.alignment = .centerY
-        row.spacing = 10
-        row.widthAnchor.constraint(equalToConstant: 454).isActive = true
-
-        label.lineBreakMode = .byTruncatingMiddle
-        label.widthAnchor.constraint(equalToConstant: 230).isActive = true
-        row.addArrangedSubview(label)
-
-        let choose = NSButton(title: "Wybierz...", target: self, action: chooseAction)
-        choose.tag = tag
-        choose.bezelStyle = .rounded
-        choose.widthAnchor.constraint(equalToConstant: 94).isActive = true
-        row.addArrangedSubview(choose)
-
-        let play = NSButton(title: "Odtworz", target: self, action: playAction)
-        play.tag = tag
-        play.bezelStyle = .rounded
-        play.widthAnchor.constraint(equalToConstant: 96).isActive = true
-        if let image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: nil) {
-            play.image = image
-            play.imagePosition = .imageLeading
-        }
-        row.addArrangedSubview(play)
-
-        return row
-    }
-
-    private func sliderRow(slider: NSSlider, value: NSTextField) -> NSStackView {
-        let row = NSStackView()
-        row.orientation = .horizontal
-        row.alignment = .centerY
-        row.spacing = 10
-
-        slider.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        value.font = .monospacedDigitSystemFont(ofSize: 13, weight: .regular)
-        value.textColor = .secondaryLabelColor
-        value.widthAnchor.constraint(equalToConstant: 64).isActive = true
-
-        row.addArrangedSubview(slider)
-        row.addArrangedSubview(value)
-        return row
-    }
-
-    private func numericRow(field: NSTextField, suffix: String) -> NSStackView {
-        let row = NSStackView()
-        row.orientation = .horizontal
-        row.alignment = .centerY
-        row.spacing = 8
-
-        field.font = .monospacedDigitSystemFont(ofSize: 13, weight: .regular)
-        field.widthAnchor.constraint(equalToConstant: 86).isActive = true
-        row.addArrangedSubview(field)
-
-        let unit = NSTextField(labelWithString: suffix)
-        unit.textColor = .secondaryLabelColor
-        row.addArrangedSubview(unit)
-
-        return row
-    }
-
-    private func configureStack(_ stack: NSStackView) {
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 8
-    }
-
-    private func fileLabel() -> NSTextField {
-        let label = NSTextField(labelWithString: "")
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .labelColor
-        return label
-    }
-
-    private func loadSettings() {
-        let settings = store.settings
-        modeControl.selectedSegment = settings.soundMode == .single ? 0 : 1
-        singlePathLabel.stringValue = displayName(settings.singleSoundPath)
-        for idx in 0..<5 {
-            scaledPathLabels[idx].stringValue = displayName(settings.scaledSoundPaths[idx])
-        }
-        volumeSlider.doubleValue = settings.soundVolume * 100.0
-        lidEnabledCheckbox.state = settings.lidSoundEnabled ? .on : .off
-        lidSoundLabel.stringValue = displayName(settings.lidSoundPath)
-        lidThresholdSlider.doubleValue = settings.lidAngleThreshold
-        lidCooldownSlider.doubleValue = Double(settings.lidSoundCooldownMilliseconds)
-        lidStopMarginSlider.doubleValue = Double(settings.lidStopMarginMilliseconds)
-        lidMaxPlaybackSlider.doubleValue = Double(settings.lidMaxPlaybackMilliseconds)
-        sensitivitySlider.doubleValue = settings.minAmplitude
-        maxScaleSlider.doubleValue = settings.maxScaleAmplitude
-        cooldownSlider.doubleValue = Double(settings.cooldownMilliseconds)
-        autostartCheckbox.state = AutostartManager.isEnabled ? .on : .off
-        refreshValueLabels()
-        refreshModeVisibility()
-    }
-
-    private func refreshModeVisibility() {
-        singleStack.isHidden = modeControl.selectedSegment != 0
-        scaledStack.isHidden = modeControl.selectedSegment != 1
-    }
-
-    private func refreshValueLabels() {
-        volumeValue.stringValue = "\(Int(volumeSlider.doubleValue.rounded()))%"
-        lidThresholdValue.stringValue = "\(Int(lidThresholdSlider.doubleValue.rounded())) deg"
-        lidCooldownValue.stringValue = "\(Int(lidCooldownSlider.doubleValue.rounded())) ms"
-        lidStopMarginValue.stringValue = "\(Int(lidStopMarginSlider.doubleValue.rounded())) ms"
-        lidMaxPlaybackValue.stringValue = "\(Int(lidMaxPlaybackSlider.doubleValue.rounded())) ms"
-        sensitivityValue.stringValue = String(format: "%.3fg", sensitivitySlider.doubleValue)
-        maxScaleValue.stringValue = String(format: "%.2fg", maxScaleSlider.doubleValue)
-        cooldownValue.stringValue = "\(Int(cooldownSlider.doubleValue.rounded())) ms"
-    }
-
-    private func displayName(_ path: String) -> String {
-        path.isEmpty ? "Nie ustawiono" : URL(fileURLWithPath: path).lastPathComponent
-    }
-
-    private func chooseFile(completion: @escaping (URL) -> Void) {
+    private func chooseAudioFile(completion: (URL) -> Void) {
         let panel = NSOpenPanel()
         panel.canChooseDirectories = false
         panel.canChooseFiles = true
@@ -404,230 +166,455 @@ final class SettingsWindowController: NSWindowController {
         }
     }
 
-    @objc private func modeChanged() {
-        refreshModeVisibility()
-        saveSettings()
+    private func play(path: String) {
+        guard !path.isEmpty else { return }
+        player.play(url: URL(fileURLWithPath: path), volume: settings.soundVolume)
     }
 
-    @objc private func volumeChanged() {
-        refreshValueLabels()
-        saveSettings()
+    private func displayName(_ path: String) -> String {
+        path.isEmpty ? L.notSet : URL(fileURLWithPath: path).lastPathComponent
     }
 
-    @objc private func lidEnabledChanged() {
-        saveSettings()
-    }
-
-    @objc private func lidThresholdChanged() {
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func lidCooldownChanged() {
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func lidStopMarginChanged() {
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func lidMaxPlaybackChanged() {
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func sensitivityChanged() {
-        if maxScaleSlider.doubleValue <= sensitivitySlider.doubleValue {
-            maxScaleSlider.doubleValue = sensitivitySlider.doubleValue + 0.02
-        }
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func maxScaleChanged() {
-        if maxScaleSlider.doubleValue <= sensitivitySlider.doubleValue {
-            maxScaleSlider.doubleValue = sensitivitySlider.doubleValue + 0.02
-        }
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func cooldownChanged() {
-        refreshValueLabels()
-        saveSettings()
-    }
-
-    @objc private func autostartChanged() {
-        do {
-            try AutostartManager.setEnabled(autostartCheckbox.state == .on)
-        } catch {
-            autostartCheckbox.state = AutostartManager.isEnabled ? .on : .off
-            showError("Nie udalo sie zmienic autostartu", error: error)
-        }
-    }
-
-    @objc private func chooseSingleSound() {
-        chooseFile { [weak self] url in
-            guard let self else { return }
-            var settings = store.settings
-            settings.singleSoundPath = url.path
-            store.save(settings)
-            loadSettings()
-        }
-    }
-
-    @objc private func chooseScaledSound(_ sender: NSButton) {
-        chooseFile { [weak self] url in
-            guard let self else { return }
-            var settings = store.settings
-            settings.scaledSoundPaths[sender.tag] = url.path
-            store.save(settings)
-            loadSettings()
-        }
-    }
-
-    @objc private func chooseLidSound() {
-        chooseFile { [weak self] url in
-            guard let self else { return }
-            var settings = store.settings
-            settings.lidSoundPath = url.path
-            settings.lidSoundEnabled = true
-            store.save(settings)
-            loadSettings()
-        }
-    }
-
-    @objc private func playSingleSound() {
-        let settings = store.settings
-        player.play(url: URL(fileURLWithPath: settings.singleSoundPath), volume: settings.soundVolume)
-    }
-
-    @objc private func playScaledSound(_ sender: NSButton) {
-        let settings = store.settings
-        guard settings.scaledSoundPaths.indices.contains(sender.tag) else { return }
-        player.play(url: URL(fileURLWithPath: settings.scaledSoundPaths[sender.tag]), volume: settings.soundVolume)
-    }
-
-    @objc private func playLidSound() {
-        let settings = store.settings
-        guard !settings.lidSoundPath.isEmpty else { return }
-        player.play(url: URL(fileURLWithPath: settings.lidSoundPath), volume: settings.soundVolume)
-    }
-
-    @objc private func saveSettings() {
-        var settings = store.settings
-        settings.soundMode = modeControl.selectedSegment == 0 ? .single : .scaled
-        settings.soundVolume = volumeSlider.doubleValue / 100.0
-        settings.lidSoundEnabled = lidEnabledCheckbox.state == .on
-        settings.lidAngleThreshold = lidThresholdSlider.doubleValue
-        settings.lidSoundCooldownMilliseconds = Int(lidCooldownSlider.doubleValue)
-        settings.lidStopMarginMilliseconds = Int(lidStopMarginSlider.doubleValue)
-        settings.lidMaxPlaybackMilliseconds = Int(lidMaxPlaybackSlider.doubleValue)
-        settings.minAmplitude = sensitivitySlider.doubleValue
-        settings.maxScaleAmplitude = maxScaleSlider.doubleValue
-        settings.cooldownMilliseconds = Int(cooldownSlider.doubleValue)
-        store.save(settings)
-    }
-
-    @objc private func closeWindow() {
-        window?.close()
+    @objc private func settingsStoreChanged() {
+        guard !isSaving else { return }
+        settings = store.settings
+        updateWindowSubtitle?()
     }
 
     @objc private func slapMeasurement(_ notification: Notification) {
         guard let amplitude = notification.userInfo?["amplitude"] as? Double,
               let level = notification.userInfo?["level"] as? Int else { return }
-        visualizerView.updateSlap(amplitude: amplitude, level: level)
+        slapAmplitude = amplitude
+        slapLevel = min(max(level, 0), 4)
     }
 
     @objc private func lidMeasurement(_ notification: Notification) {
         guard let angle = notification.userInfo?["angle"] as? Double,
               let delta = notification.userInfo?["delta"] as? Double else { return }
-        visualizerView.updateLid(angle: angle, delta: delta)
-    }
-
-    private func showError(_ message: String, error: Error) {
-        let alert = NSAlert()
-        alert.messageText = message
-        alert.informativeText = error.localizedDescription
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
+        lidAngle = angle
+        lidDelta = delta
     }
 }
 
-private final class SensorVisualizerView: NSView {
-    private var amplitude: Double?
-    private var level: Int?
-    private var lidAngle: Double?
-    private var lidDelta: Double?
+private struct SettingsWindowView: View {
+    @ObservedObject var model: SettingsWindowModel
 
-    override var isFlipped: Bool { true }
+    var body: some View {
+        TabView {
+            settingsTab
+                .tabItem {
+                    Label(L.tabSettings, systemImage: "slider.horizontal.3")
+                }
 
-    func updateSlap(amplitude: Double, level: Int) {
-        self.amplitude = amplitude
-        self.level = min(max(level, 0), 4)
-        needsDisplay = true
-    }
-
-    func updateLid(angle: Double, delta: Double) {
-        lidAngle = angle
-        lidDelta = delta
-        needsDisplay = true
-    }
-
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-
-        let bounds = bounds.insetBy(dx: 0, dy: 4)
-        let background = NSBezierPath(roundedRect: bounds, xRadius: 10, yRadius: 10)
-        NSColor.controlBackgroundColor.setFill()
-        background.fill()
-
-        drawText("Uderzenie", at: NSPoint(x: 18, y: 16), color: .secondaryLabelColor, weight: .semibold)
-        let ampText = amplitude.map { String(format: "%.4fg", $0) } ?? "brak"
-        let levelText = level.map { "poziom \($0 + 1)/5" } ?? "poziom -"
-        drawText("\(ampText)  \(levelText)", at: NSPoint(x: 392, y: 16), color: .secondaryLabelColor, alignment: .right)
-
-        let barY: CGFloat = 44
-        let barWidth: CGFloat = 92
-        let gap: CGFloat = 8
-        for idx in 0..<5 {
-            let rect = NSRect(x: 18 + CGFloat(idx) * (barWidth + gap), y: barY, width: barWidth, height: 18)
-            let path = NSBezierPath(roundedRect: rect, xRadius: 5, yRadius: 5)
-            if let level, idx <= level {
-                NSColor.controlAccentColor.setFill()
-            } else {
-                NSColor.separatorColor.withAlphaComponent(0.45).setFill()
+            AboutClankView()
+                .tabItem {
+                    Label(L.tabAbout, systemImage: "info.circle")
+                }
+        }
+        .frame(minWidth: 620, idealWidth: 660, minHeight: 560, idealHeight: 620)
+        .alert(L.failedAutostartTitle, isPresented: errorPresented) {
+            Button(L.okButton, role: .cancel) {
+                model.errorMessage = nil
             }
-            path.fill()
+        } message: {
+            Text(model.errorMessage ?? "")
         }
-
-        drawText("Klapa", at: NSPoint(x: 18, y: 82), color: .secondaryLabelColor, weight: .semibold)
-        let lidText: String
-        if let lidAngle, let lidDelta {
-            lidText = String(format: "%.0f deg, zmiana %.0f deg", lidAngle, lidDelta)
-        } else {
-            lidText = "brak"
-        }
-        drawText(lidText, at: NSPoint(x: 392, y: 82), color: .secondaryLabelColor, alignment: .right)
     }
 
-    private func drawText(
-        _ text: String,
-        at point: NSPoint,
-        color: NSColor,
-        weight: NSFont.Weight = .regular,
-        alignment: NSTextAlignment = .left
-    ) {
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = alignment
-        let rect = NSRect(x: point.x, y: point.y, width: alignment == .right ? 190 : 180, height: 18)
-        text.draw(in: rect, withAttributes: [
-            .font: NSFont.systemFont(ofSize: 12, weight: weight),
-            .foregroundColor: color,
-            .paragraphStyle: paragraph
-        ])
+    private var errorPresented: Binding<Bool> {
+        Binding(
+            get: { model.errorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    model.errorMessage = nil
+                }
+            }
+        )
+    }
+
+    private var settingsTab: some View {
+        Form {
+            soundsSection
+            sensorsSection
+            appSection
+        }
+        .formStyle(.grouped)
+        .safeAreaInset(edge: .bottom) {
+            footer
+        }
+        .padding(.top, 8)
+    }
+
+    private var soundsSection: some View {
+        Section {
+            Picker(L.labelSoundMode, selection: model.binding(\.soundMode)) {
+                Text(L.modeOneSoundShort).tag(SoundMode.single)
+                Text(L.menuFiveSoundsByStrength).tag(SoundMode.scaled)
+            }
+            .pickerStyle(.segmented)
+
+            if model.settings.soundMode == .single {
+                SoundFileRow(
+                    title: L.labelSoundFile,
+                    fileName: model.singleSoundName,
+                    choose: model.chooseSingleSound,
+                    play: model.playSingleSound
+                )
+            } else {
+                ForEach(0..<5, id: \.self) { index in
+                    SoundFileRow(
+                        title: L.levelLabel(index + 1),
+                        fileName: model.scaledSoundName(at: index),
+                        choose: { model.chooseScaledSound(index: index) },
+                        play: { model.playScaledSound(index: index) }
+                    )
+                }
+            }
+
+            LabeledContent(L.labelVolume) {
+                HStack {
+                    Slider(value: model.binding(\.soundVolume), in: 0...1)
+                    Text(model.settings.soundVolume, format: .percent.precision(.fractionLength(0)))
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                        .frame(width: 48, alignment: .trailing)
+                }
+            }
+        } header: {
+            Label(L.sectionSoundReactions, systemImage: "speaker.wave.2")
+        } footer: {
+            Text(L.sectionSoundReactionsFooter)
+        }
+    }
+
+    private var sensorsSection: some View {
+        Section {
+            Toggle(L.labelPlayOnLidMove, isOn: model.binding(\.lidSoundEnabled))
+
+            SoundFileRow(
+                title: L.labelLidSound,
+                fileName: model.lidSoundName,
+                choose: model.chooseLidSound,
+                play: model.playLidSound
+            )
+            .disabled(!model.settings.lidSoundEnabled)
+
+            LabeledSlider(
+                title: L.labelMinSensitivity,
+                value: model.binding(\.minAmplitude),
+                range: 0.005...0.30,
+                displayValue: String(format: "%.3fg", model.settings.minAmplitude)
+            )
+
+            LabeledSlider(
+                title: L.labelUpperScale,
+                value: model.binding(\.maxScaleAmplitude),
+                range: 0.06...0.50,
+                displayValue: String(format: "%.2fg", model.settings.maxScaleAmplitude)
+            )
+
+            LabeledSlider(
+                title: L.labelMovementThreshold,
+                value: model.binding(\.lidAngleThreshold),
+                range: 1...45,
+                displayValue: String(format: "%.0f deg", model.settings.lidAngleThreshold)
+            )
+            .disabled(!model.settings.lidSoundEnabled)
+
+            DisclosureGroup(L.sectionAdvancedTiming) {
+                LabeledSlider(
+                    title: L.labelSlapCooldown,
+                    value: intBinding(\.cooldownMilliseconds),
+                    range: 100...5000,
+                    displayValue: "\(model.settings.cooldownMilliseconds) ms"
+                )
+
+                LabeledSlider(
+                    title: L.labelLidCooldown,
+                    value: intBinding(\.lidSoundCooldownMilliseconds),
+                    range: 100...5000,
+                    displayValue: "\(model.settings.lidSoundCooldownMilliseconds) ms"
+                )
+
+                LabeledSlider(
+                    title: L.labelStopMargin,
+                    value: intBinding(\.lidStopMarginMilliseconds),
+                    range: 50...2000,
+                    displayValue: "\(model.settings.lidStopMarginMilliseconds) ms"
+                )
+
+                LabeledSlider(
+                    title: L.labelMaxLength,
+                    value: intBinding(\.lidMaxPlaybackMilliseconds),
+                    range: 500...5000,
+                    displayValue: "\(model.settings.lidMaxPlaybackMilliseconds) ms"
+                )
+            }
+
+            SensorPreview(
+                amplitude: model.slapAmplitude,
+                level: model.slapLevel,
+                lidAngle: model.lidAngle,
+                lidDelta: model.lidDelta
+            )
+        } header: {
+            Label(L.sectionSensors, systemImage: "waveform.path.ecg")
+        } footer: {
+            Text(L.sectionSensorsFooter)
+        }
+    }
+
+    private var appSection: some View {
+        Section {
+            Toggle(
+                L.labelLaunchAtLogin,
+                isOn: Binding(
+                    get: { AutostartManager.isEnabled },
+                    set: model.setAutostart
+                )
+            )
+
+            Picker(L.labelLanguage, selection: model.binding(\.language)) {
+                ForEach(Language.allCases, id: \.self) { language in
+                    Text(language.displayName).tag(language)
+                }
+            }
+            .pickerStyle(.segmented)
+        } header: {
+            Label(L.sectionApplication, systemImage: "app.badge")
+        }
+    }
+
+    private var footer: some View {
+        HStack {
+            Text(L.changesSaveAutomatically)
+                .foregroundStyle(.secondary)
+            Spacer()
+            Button(L.doneButton) {
+                model.closeWindow?()
+            }
+            .keyboardShortcut(.defaultAction)
+            .buttonStyle(.borderedProminent)
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 12)
+        .background(.bar)
+    }
+
+    private func intBinding(_ keyPath: WritableKeyPath<AppSettings, Int>) -> Binding<Double> {
+        Binding(
+            get: { Double(model.settings[keyPath: keyPath]) },
+            set: { value in
+                model.settings[keyPath: keyPath] = Int(value.rounded())
+                model.save()
+            }
+        )
+    }
+}
+
+private struct SoundFileRow: View {
+    let title: String
+    let fileName: String
+    let choose: () -> Void
+    let play: () -> Void
+
+    var body: some View {
+        LabeledContent(title) {
+            HStack(spacing: 8) {
+                Text(fileName)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Button(L.chooseButton, action: choose)
+
+                Button(action: play) {
+                    Label(L.playButton, systemImage: "play.fill")
+                }
+                .disabled(fileName == L.notSet)
+            }
+        }
+    }
+}
+
+private struct LabeledSlider: View {
+    let title: String
+    @Binding var value: Double
+    let range: ClosedRange<Double>
+    let displayValue: String
+
+    var body: some View {
+        LabeledContent(title) {
+            HStack {
+                Slider(value: $value, in: range)
+                Text(displayValue)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+                    .frame(width: 68, alignment: .trailing)
+            }
+        }
+    }
+}
+
+private struct SensorPreview: View {
+    let amplitude: Double?
+    let level: Int?
+    let lidAngle: Double?
+    let lidDelta: Double?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .firstTextBaseline) {
+                Label(L.sectionReadingPreview, systemImage: "dot.radiowaves.left.and.right")
+                    .font(.headline)
+                Spacer()
+                Text(readingSummary)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
+
+            HStack(spacing: 8) {
+                ForEach(0..<5, id: \.self) { index in
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(index <= (level ?? -1) ? Color.accentColor : Color.secondary.opacity(0.25))
+                        .frame(height: 12)
+                }
+            }
+            .accessibilityLabel(L.visualSlap)
+            .accessibilityValue(level.map { L.visualLevel($0 + 1) } ?? L.visualLevelEmpty)
+
+            HStack {
+                Text(L.visualLid)
+                Spacer()
+                Text(lidSummary)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
+        }
+        .padding(12)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private var readingSummary: String {
+        let ampText = amplitude.map { String(format: "%.4fg", $0) } ?? L.visualNone
+        let levelText = level.map { L.visualLevel($0 + 1) } ?? L.visualLevelEmpty
+        return "\(ampText)  \(levelText)"
+    }
+
+    private var lidSummary: String {
+        guard let lidAngle, let lidDelta else { return L.visualNone }
+        return L.visualLidDetail(angle: lidAngle, delta: lidDelta)
+    }
+}
+
+private struct AboutClankView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Spacer(minLength: 24)
+
+            appIcon
+                .frame(width: 96, height: 96)
+                .accessibilityHidden(true)
+
+            VStack(spacing: 6) {
+                Text("Clank")
+                    .font(.largeTitle)
+                    .bold()
+                Text(L.aboutTagline)
+                    .foregroundStyle(.secondary)
+            }
+
+            VStack(alignment: .leading, spacing: 10) {
+                AboutRow(title: L.aboutVersion, value: versionString)
+                AboutLinkRow(title: L.aboutAuthor, label: L.aboutAuthorName, url: URL(string: "https://conceptfab.com")!)
+                AboutLinkRow(title: L.aboutWebsite, label: L.aboutWebsiteName, url: URL(string: "https://clink.conceptfab.com")!)
+                AboutRow(title: L.aboutIcons, value: L.aboutIconsCredit)
+                AboutRow(title: L.aboutHelper, value: HelperInstaller.isInstalled ? L.aboutHelperInstalled : L.aboutHelperNotInstalled)
+                AboutRow(title: L.aboutPlatform, value: L.aboutPlatformValue)
+            }
+            .padding(.top, 8)
+            .frame(maxWidth: 360)
+
+            Text(L.aboutBody)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: 420)
+
+            Link(destination: URL(string: "https://www.buymeacoffee.com/conceptfab")!) {
+                buyMeCoffeeButton
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(L.aboutSupport)
+            .padding(.top, 4)
+
+            Spacer()
+        }
+        .padding(32)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var appIcon: some View {
+        Group {
+            if let url = Bundle.module.url(forResource: "AppIcon", withExtension: "icns"),
+               let image = NSImage(contentsOf: url) {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                Image(systemName: "laptopcomputer")
+                    .resizable()
+                    .scaledToFit()
+            }
+        }
+    }
+
+    private var buyMeCoffeeButton: some View {
+        Group {
+            if let url = Bundle.module.url(forResource: "buy-me-a-coffee", withExtension: "png"),
+               let image = NSImage(contentsOf: url) {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 217, height: 60)
+            } else {
+                Label(L.aboutSupport, systemImage: "cup.and.saucer.fill")
+                    .frame(minWidth: 180)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 14)
+                    .background(.yellow, in: Capsule())
+                    .foregroundStyle(.black)
+            }
+        }
+    }
+
+    private var versionString: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+        let build = info?["CFBundleVersion"] as? String ?? "1"
+        return "\(version) (\(build))"
+    }
+}
+
+private struct AboutRow: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        LabeledContent(title) {
+            Text(value)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
+private struct AboutLinkRow: View {
+    let title: String
+    let label: String
+    let url: URL
+
+    var body: some View {
+        LabeledContent(title) {
+            Link(label, destination: url)
+        }
     }
 }

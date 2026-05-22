@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Clank — OUCH OUCH OUCH</title>
 <meta name="description" content="THE LOUDEST FREE APP YOUR MAC HAS EVER HAD. SCREAMS WHEN YOU TOUCH IT. NOT A JOKE. (it is a joke)" />
-<link rel="icon" type="image/png" href="favicon.png" />
-<link rel="apple-touch-icon" href="favicon.png" />
+<link rel="canonical" href="https://clink.conceptfab.com/" />
+<link rel="icon" type="image/webp" href="favicon.webp" />
+<link rel="apple-touch-icon" href="favicon.webp" />
 <meta property="og:title" content="Clank — OUCH OUCH OUCH" />
 <meta property="og:description" content="A tiny menu-bar app that makes your MacBook scream when you touch it." />
-<meta property="og:image" content="favicon.png" />
+<meta property="og:url" content="https://clink.conceptfab.com/" />
+<meta property="og:image" content="https://clink.conceptfab.com/favicon.webp" />
 <meta property="og:type" content="website" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -111,11 +113,13 @@ section { position: relative; padding: 80px 0; }
   transform: rotate(-3deg);
 }
 .brand-mark {
-  background: var(--red);
+  width: 56px;
+  height: 56px;
   border: 3px solid var(--ink);
-  padding: 4px 10px;
   box-shadow: 4px 4px 0 var(--ink);
-  color: #fff;
+  display: inline-block;
+  object-fit: cover;
+  background: var(--paper);
 }
 
 .menu-links { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -133,10 +137,23 @@ section { position: relative; padding: 80px 0; }
 .menu-links .cta:hover { background: var(--ink); color: var(--lime); }
 .menu-links .bmc {
   background: #FFDD00;
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 44px;
+  padding-inline: 0;
 }
 .menu-links .bmc:hover { background: var(--ink); color: #FFDD00; }
 .menu-links .bmc svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.menu-links .bmc span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 @media (max-width: 720px) { .menu-links a:not(.cta):not(.bmc) { display: none; } }
 
 /* ===== Hero ===== */
@@ -214,6 +231,28 @@ section { position: relative; padding: 80px 0; }
   transition: transform .12s;
 }
 .ghost-btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
+
+.coffee-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--ink);
+  background: #FFDD00;
+  box-shadow: 8px 8px 0 var(--ink);
+  transform: rotate(1deg);
+  transition: transform .12s, box-shadow .12s;
+}
+.coffee-btn:hover { transform: rotate(1deg) translate(-3px,-3px); box-shadow: 11px 11px 0 var(--ink); }
+.coffee-btn:active { transform: rotate(1deg) translate(2px,2px); box-shadow: 3px 3px 0 var(--ink); }
+.coffee-btn img {
+  width: 217px;
+  height: 60px;
+  object-fit: contain;
+}
+@media (max-width: 520px) {
+  .hero-cta { gap: 12px; }
+  .coffee-btn img { width: 190px; height: auto; }
+}
 
 /* Floating stickers around hero */
 .sticker {
@@ -447,7 +486,7 @@ section { position: relative; padding: 80px 0; }
 .slam-graphic:active { transform: rotate(-2deg) scale(.96); }
 .slam-graphic .small { font-size: 0.4em; color: var(--ink); text-shadow: none; display: block; letter-spacing: 0.04em; }
 
-/* ===== Menu bar mock (wild) ===== */
+/* ===== Menu bar screenshot ===== */
 .menubar-wild {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
@@ -456,49 +495,13 @@ section { position: relative; padding: 80px 0; }
 }
 @media (max-width: 920px) { .menubar-wild { grid-template-columns: 1fr; } }
 
-.macframe-wild {
-  background: linear-gradient(180deg, #d2d5d9 0%, #aeb2b7 100%);
-  border-radius: 14px;
-  border: 4px solid var(--ink);
-  box-shadow: 16px 16px 0 var(--ink);
-  overflow: hidden;
+.menu-shot {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  filter: drop-shadow(16px 16px 0 var(--ink));
   transform: rotate(-2deg);
 }
-.macframe-wild .bar {
-  height: 28px;
-  background: rgba(245,243,238,.95);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 12px;
-  border-bottom: 2px solid var(--ink);
-  font-family: -apple-system, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-}
-.macframe-wild .body {
-  height: 320px;
-  background:
-    linear-gradient(135deg, var(--pink) 0%, var(--orange) 50%, var(--lime) 100%);
-  position: relative;
-}
-.dropdown-wild {
-  position: absolute;
-  top: 8px; right: 80px;
-  width: 270px;
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  box-shadow: 6px 6px 0 var(--ink);
-  padding: 6px;
-  font-family: -apple-system, sans-serif;
-  font-size: 13px;
-}
-.dd-row { display: flex; justify-content: space-between; padding: 7px 10px; }
-.dd-row.status { font-weight: 700; color: var(--red); }
-.dd-row .meta { font-size: 12px; opacity: 0.7; }
-.dd-sep { height: 2px; background: var(--ink); margin: 4px 6px; }
-.dd-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; padding: 6px 10px 2px; font-weight: 700; }
-.slider { height: 4px; background: var(--ink); margin: 6px 10px; position: relative; }
-.slider .fill { position: absolute; left: 0; top: -1px; height: 6px; background: var(--red); border: 1px solid var(--ink); }
-.slider .knob { position: absolute; top: 50%; width: 12px; height: 12px; background: var(--lime); border: 2px solid var(--ink); transform: translate(-50%,-50%); }
+@media (max-width: 920px) { .menu-shot { max-width: 540px; } }
 
 .feats-wild {
   list-style: none; padding: 0; margin: 0;
@@ -672,7 +675,8 @@ footer {
 <div class="wrap">
   <div class="nav">
     <a class="brand" href="#">
-      <span class="brand-mark">CL</span>ANK
+      <img class="brand-mark" src="favicon.webp" alt="Clank icon" width="56" height="56" />
+      CLANK
     </a>
     <div class="menu-links">
       <a href="#how">How??</a>
@@ -687,7 +691,7 @@ footer {
           <path d="M15 4c0 1 1 1 1 2s-1 1-1 2"/>
           <path d="M4 19h15"/>
         </svg>
-        Buy me a coffee
+        <span>Buy me a coffee</span>
       </a>
       <a class="cta" href="#install">GET IT →</a>
     </div>
@@ -720,6 +724,9 @@ footer {
     <div class="hero-cta">
       <a class="big-btn" href="https://github.com/conceptfab/clank/releases/latest">DOWNLOAD ↓ <span style="font-size:0.6em;">3.2 MB</span></a>
       <a class="ghost-btn" href="https://github.com/conceptfab/clank">github →</a>
+      <a class="coffee-btn" href="https://www.buymeacoffee.com/conceptfab" target="_blank" rel="noopener" aria-label="Buy Me a Coffee">
+        <img src="buy-me-a-coffee.webp" alt="Buy Me a Coffee" width="217" height="60" />
+      </a>
     </div>
 
     <!-- Mascot row -->
@@ -883,33 +890,7 @@ footer {
 <!-- ============ MENU BAR ============ -->
 <section id="bar" class="bg-violet" data-screen-label="04 Menu bar">
   <div class="wrap menubar-wild">
-    <div class="macframe-wild">
-      <div class="bar">
-        <div style="display:flex;gap:14px;align-items:center"><span>&#xF8FF;</span><span>Finder</span><span style="opacity:0.6">File</span><span style="opacity:0.6">Edit</span></div>
-        <div style="display:flex;gap:12px;align-items:center">
-          <span style="background:var(--red);color:#fff;padding:3px 8px;border:2px solid var(--ink);font-weight:700">Clank</span>
-          <span style="opacity:0.7">100%</span>
-          <span style="opacity:0.7">02:14</span>
-        </div>
-      </div>
-      <div class="body">
-        <div class="dropdown-wild">
-          <div class="dd-row status">● LISTENING <span class="meta">since 09:14</span></div>
-          <div class="dd-sep"></div>
-          <div class="dd-sub">Modes</div>
-          <div class="dd-row"><span>Smack mode</span><span class="meta">On</span></div>
-          <div class="slider"><div class="fill" style="width:62%"></div><div class="knob" style="left:62%"></div></div>
-          <div class="dd-row"><span>Lid slam</span><span class="meta">On</span></div>
-          <div class="slider"><div class="fill" style="width:78%"></div><div class="knob" style="left:78%"></div></div>
-          <div class="dd-sep"></div>
-          <div class="dd-row"><span>Voice pack</span><span class="meta">Default · 10</span></div>
-          <div class="dd-row"><span>Drop in your own…</span></div>
-          <div class="dd-sep"></div>
-          <div class="dd-row"><span>Pause</span><span class="meta">⌘P</span></div>
-          <div class="dd-row"><span>Quit</span><span class="meta">⌘Q</span></div>
-        </div>
-      </div>
-    </div>
+    <img class="menu-shot" src="set.webp" alt="Clank menu bar settings preview" width="701" height="732" loading="lazy" />
 
     <div>
       <h2 class="section-title" style="color:#fff;">Tiny.<br/>Loud.<br/><span class="underline" style="color:var(--ink)">portable.</span></h2>
@@ -931,7 +912,7 @@ footer {
       <div class="install-card">
         <div class="step-tag">STEP 01</div>
         <div class="title-l">Download DMG</div>
-        <div class="body-t">Mounts like any other disk. ~1.4 MB. Pixel-perfect.</div>
+        <div class="body-t">Mounts like any other disk. ~3.2 MB. Pixel-perfect.</div>
       </div>
       <div class="install-card">
         <div class="step-tag">STEP 02</div>
@@ -950,7 +931,7 @@ footer {
       <div class="icon">!</div>
       <div>
         <h4>NOT SIGNED BY APPLE!</h4>
-        <p>Gatekeeper will warn you the first time. Right-click the app, choose <strong style="color:var(--lime)">Open</strong>, and confirm once. After that he's family. Full instructions in <a href="INSTALL.md">INSTALL.md</a>.</p>
+        <p>Gatekeeper will warn you the first time. Right-click the app, choose <strong style="color:var(--lime)">Open</strong>, and confirm once. After that he's family. Full instructions are in the <a href="https://github.com/conceptfab/clank/blob/main/INSTALL.md">install guide</a>.</p>
       </div>
     </aside>
   </div>
@@ -963,7 +944,7 @@ footer {
     <div class="foot-info">
       Made by <strong>ConceptFab</strong> · macOS Apple Silicon · v1.0.0<br/>
       <a href="https://github.com/conceptfab/clank">GitHub</a>
-      <a href="LICENSE">MIT</a>
+      <a href="https://github.com/conceptfab/clank/blob/main/LICENSE">MIT</a>
       <a href="mailto:hello@conceptfab.com">Email</a>
       <a href="https://www.buymeacoffee.com/conceptfab" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </div>

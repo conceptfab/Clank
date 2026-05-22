@@ -16,6 +16,7 @@ let package = Package(
             resources: [
                 .copy("Resources/audio"),
                 .copy("Resources/icon.png"),
+                .copy("Resources/buy-me-a-coffee.png"),
                 .copy("Resources/AppIcon.icns"),
                 .copy("Resources/dev.conceptfab.clank.sensor-helper.plist.template")
             ],

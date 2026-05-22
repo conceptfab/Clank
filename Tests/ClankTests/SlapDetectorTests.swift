@@ -16,7 +16,8 @@ final class SlapDetectorTests: XCTestCase {
             lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: min,
             cooldownMilliseconds: cooldown,
-            maxScaleAmplitude: 0.15
+            maxScaleAmplitude: 0.15,
+            language: .en
         )
     }
 

@@ -8,9 +8,9 @@ enum SensorHelperClientError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .daemonNotInstalled:
-            return "Helper sensora nie jest zainstalowany. Uruchom scripts/install-helper.sh i sprobuj ponownie."
+            return L.errDaemonNotInstalled
         case .eventsFileMissing(let path):
-            return "Brak pliku zdarzen helpera (\(path)). Sprawdz czy LaunchDaemon dziala: sudo launchctl list | grep clank"
+            return L.errEventsFileMissing(path)
         }
     }
 }

@@ -12,11 +12,11 @@ enum AccelerometerMonitorError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .requiresRoot:
-            return "brak uprawnien root"
+            return L.errRequiresRoot
         case .noAccelerometer:
-            return "nie znaleziono akcelerometru AppleSPUHIDDevice"
+            return L.errNoAccelerometer
         case .noSensors:
-            return "nie znaleziono sensorow AppleSPUHIDDevice"
+            return L.errNoSensors
         case .iokit(let message):
             return message
         }

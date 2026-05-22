@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# build-dmg.sh — pakuje podpisana Clank.app w DMG
+# build-dmg.sh — packages a signed Clank.app into a DMG
 #
-# Uzycie: ./scripts/build-dmg.sh <Clank.app> <wyjsciowy.dmg>
+# Usage: ./scripts/build-dmg.sh <Clank.app> <output.dmg>
 #
-# DMG zawiera: Clank.app + INSTALL.md + LICENSE + symlink /Applications.
-# Aplikacja samodzielnie instaluje helpera sensora przy pierwszym uruchomieniu
-# (przez NSAlert + macOS password prompt). Skrypty install/uninstall sa
-# dostepne w repo do dev/diagnostyki, ale nie sa dystrybuowane w DMG.
+# The DMG includes: Clank.app + INSTALL.md + LICENSE + /Applications symlink.
+# The app installs the sensor helper on first launch
+# through NSAlert + the macOS password prompt. The install/uninstall scripts
+# are kept in the repo for development/diagnostics, but are not distributed in the DMG.
 
 APP_PATH="${1:?usage: build-dmg.sh <Clank.app> <output.dmg>}"
 OUT_DMG="${2:?usage: build-dmg.sh <Clank.app> <output.dmg>}"
 
 if [[ ! -d "${APP_PATH}" ]]; then
-    echo "blad: nie znaleziono ${APP_PATH}" >&2
+    echo "error: ${APP_PATH} not found" >&2
     exit 1
 fi
 
@@ -24,15 +24,15 @@ mkdir -p "${OUT_DIR}"
 STAGE="$(mktemp -d -t clank-dmg.XXXXXX)"
 trap 'rm -rf "${STAGE}"' EXIT
 
-echo "==> Przygotowuje zawartosc DMG w ${STAGE}"
+echo "==> Preparing DMG contents in ${STAGE}"
 cp -R "${APP_PATH}" "${STAGE}/Clank.app"
 cp INSTALL.md "${STAGE}/INSTALL.md"
 cp LICENSE "${STAGE}/LICENSE"
 
-# Symlink do /Applications dla ladnego drag-to-install UX
+# /Applications symlink for the drag-to-install flow.
 ln -s /Applications "${STAGE}/Applications"
 
-echo "==> Tworze DMG: ${OUT_DMG}"
+echo "==> Creating DMG: ${OUT_DMG}"
 rm -f "${OUT_DMG}"
 hdiutil create \
     -volname "Clank" \
@@ -42,5 +42,5 @@ hdiutil create \
     "${OUT_DMG}"
 
 echo ""
-echo "Gotowe: ${OUT_DMG}"
+echo "Done: ${OUT_DMG}"
 ls -lh "${OUT_DMG}"

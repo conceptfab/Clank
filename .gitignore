@@ -12,3 +12,6 @@ dist/
 
 # macOS Finder
 .DS_Store
+
+# Local environment configs
+.env_ftp

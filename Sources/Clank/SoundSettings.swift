@@ -1,6 +1,6 @@
 import Foundation
 
-enum SoundMode: String, Codable {
+enum SoundMode: String, Codable, Hashable {
     case single
     case scaled
 }
@@ -19,6 +19,7 @@ struct AppSettings: Codable {
     var minAmplitude: Double
     var cooldownMilliseconds: Int
     var maxScaleAmplitude: Double
+    var language: Language
 
     init(
         soundMode: SoundMode,
@@ -33,7 +34,8 @@ struct AppSettings: Codable {
         lidMaxPlaybackMilliseconds: Int,
         minAmplitude: Double,
         cooldownMilliseconds: Int,
-        maxScaleAmplitude: Double
+        maxScaleAmplitude: Double,
+        language: Language
     ) {
         self.soundMode = soundMode
         self.singleSoundPath = singleSoundPath
@@ -48,6 +50,7 @@ struct AppSettings: Codable {
         self.minAmplitude = minAmplitude
         self.cooldownMilliseconds = cooldownMilliseconds
         self.maxScaleAmplitude = maxScaleAmplitude
+        self.language = language
     }
 
     init(from decoder: Decoder) throws {
@@ -56,7 +59,7 @@ struct AppSettings: Codable {
         singleSoundPath = try container.decode(String.self, forKey: .singleSoundPath)
         scaledSoundPaths = try container.decode([String].self, forKey: .scaledSoundPaths)
         soundVolume = try container.decodeIfPresent(Double.self, forKey: .soundVolume) ?? 1.0
-        lidSoundEnabled = try container.decodeIfPresent(Bool.self, forKey: .lidSoundEnabled) ?? false
+        lidSoundEnabled = try container.decodeIfPresent(Bool.self, forKey: .lidSoundEnabled) ?? true
         lidSoundPath = try container.decodeIfPresent(String.self, forKey: .lidSoundPath) ?? ""
         lidAngleThreshold = try container.decodeIfPresent(Double.self, forKey: .lidAngleThreshold) ?? 4.0
         lidSoundCooldownMilliseconds = try container.decodeIfPresent(Int.self, forKey: .lidSoundCooldownMilliseconds) ?? 1200
@@ -65,6 +68,7 @@ struct AppSettings: Codable {
         minAmplitude = try container.decode(Double.self, forKey: .minAmplitude)
         cooldownMilliseconds = try container.decode(Int.self, forKey: .cooldownMilliseconds)
         maxScaleAmplitude = try container.decode(Double.self, forKey: .maxScaleAmplitude)
+        language = try container.decodeIfPresent(Language.self, forKey: .language) ?? .en
     }
 }
 
@@ -112,7 +116,7 @@ final class SettingsStore {
             singleSoundPath: single,
             scaledSoundPaths: scaled,
             soundVolume: 1.0,
-            lidSoundEnabled: false,
+            lidSoundEnabled: true,
             lidSoundPath: lid,
             lidAngleThreshold: 4.0,
             lidSoundCooldownMilliseconds: 1200,
@@ -120,7 +124,8 @@ final class SettingsStore {
             lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: 0.05,
             cooldownMilliseconds: 750,
-            maxScaleAmplitude: defaultMaxScaleAmplitude
+            maxScaleAmplitude: defaultMaxScaleAmplitude,
+            language: .en
         )
     }
 

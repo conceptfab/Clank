@@ -11,15 +11,15 @@ enum HelperInstallerError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .binaryNotFound:
-            return "Nie mozna ustalic sciezki binarki Clank.app."
+            return L.errBinaryNotFound
         case .templateNotFound:
-            return "Brak szablonu LaunchDaemon plist w zasobach aplikacji."
+            return L.errTemplateNotFound
         case .scriptCreationFailed:
-            return "Nie udalo sie utworzyc skryptu instalacyjnego."
+            return L.errScriptCreationFailed
         case .userCancelled:
-            return "Instalacja anulowana przez uzytkownika."
+            return L.errUserCancelled
         case .installFailed(let message):
-            return "Instalacja helpera nie powiodla sie: \(message)"
+            return L.errInstallFailed(message)
         }
     }
 }
@@ -97,7 +97,7 @@ enum HelperInstaller {
             if code == -128 {
                 throw HelperInstallerError.userCancelled
             }
-            let message = (errorInfo[NSAppleScript.errorMessage] as? String) ?? "kod \(code)"
+            let message = (errorInfo[NSAppleScript.errorMessage] as? String) ?? L.errCode(code)
             throw HelperInstallerError.installFailed(message)
         }
     }

@@ -6,7 +6,7 @@ enum AutostartManagerError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .appBundleUnavailable:
-            return "Nie mozna ustalic sciezki aplikacji .app."
+            return L.errAppBundleUnavailable
         }
     }
 }

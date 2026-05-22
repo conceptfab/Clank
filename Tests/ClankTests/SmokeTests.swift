@@ -29,7 +29,8 @@ final class SmokeTests: XCTestCase {
             lidMaxPlaybackMilliseconds: 2000,
             minAmplitude: 0.05,
             cooldownMilliseconds: 750,
-            maxScaleAmplitude: 0.15
+            maxScaleAmplitude: 0.15,
+            language: .en
         )
     }
 }

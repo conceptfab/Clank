@@ -44,7 +44,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.preloadConfiguredSounds()
+            guard let self else { return }
+            self.preloadConfiguredSounds()
+            self.rebuildMenu()
+            self.refreshMenuState()
         }
     }
 
@@ -109,42 +112,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         stateItem.isEnabled = false
         menu.addItem(stateItem)
 
-        lastEventItem = NSMenuItem(title: "Ostatni pomiar: brak", action: nil, keyEquivalent: "")
+        lastEventItem = NSMenuItem(title: L.lastReadingNone, action: nil, keyEquivalent: "")
         lastEventItem.isEnabled = false
         menu.addItem(lastEventItem)
 
         menu.addItem(.separator())
 
-        toggleItem = NSMenuItem(title: isRunning ? "Wstrzymaj detekcje" : "Wlacz detekcje",
+        toggleItem = NSMenuItem(title: isRunning ? L.pauseDetection : L.enableDetection,
                                 action: #selector(toggleMonitoring),
                                 keyEquivalent: "")
         toggleItem.target = self
         menu.addItem(toggleItem)
 
-        let modeItem = NSMenuItem(title: "Tryb dzwiekow", action: nil, keyEquivalent: "")
+        let modeItem = NSMenuItem(title: L.menuSoundMode, action: nil, keyEquivalent: "")
         let modeMenu = NSMenu()
 
-        singleModeItem = NSMenuItem(title: "1 dzwiek", action: #selector(setSingleSoundMode), keyEquivalent: "")
+        singleModeItem = NSMenuItem(title: L.menuOneSound, action: #selector(setSingleSoundMode), keyEquivalent: "")
         singleModeItem.target = self
         modeMenu.addItem(singleModeItem)
 
-        scaledModeItem = NSMenuItem(title: "5 dzwiekow wedlug sily", action: #selector(setScaledSoundMode), keyEquivalent: "")
+        scaledModeItem = NSMenuItem(title: L.menuFiveSoundsByStrength, action: #selector(setScaledSoundMode), keyEquivalent: "")
         scaledModeItem.target = self
         modeMenu.addItem(scaledModeItem)
 
         modeItem.submenu = modeMenu
         menu.addItem(modeItem)
 
-        let helperItem = NSMenuItem(title: "Helper...", action: nil, keyEquivalent: "")
+        let helperItem = NSMenuItem(title: L.menuHelper, action: nil, keyEquivalent: "")
         let helperMenu = NSMenu()
 
-        let reinstallHelperItem = NSMenuItem(title: HelperInstaller.isInstalled ? "Reinstaluj helpera..." : "Zainstaluj helpera...",
+        let reinstallHelperItem = NSMenuItem(title: HelperInstaller.isInstalled ? L.menuReinstallHelper : L.menuInstallHelper,
                                              action: #selector(reinstallHelper),
                                              keyEquivalent: "")
         reinstallHelperItem.target = self
         helperMenu.addItem(reinstallHelperItem)
 
-        let uninstallHelperItem = NSMenuItem(title: "Odinstaluj helpera...",
+        let uninstallHelperItem = NSMenuItem(title: L.menuUninstallHelper,
                                              action: #selector(uninstallHelper),
                                              keyEquivalent: "")
         uninstallHelperItem.target = self
@@ -154,17 +157,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         helperItem.submenu = helperMenu
         menu.addItem(helperItem)
 
-        let settings = NSMenuItem(title: "Ustawienia...", action: #selector(openSettings), keyEquivalent: ",")
+        let settings = NSMenuItem(title: L.menuSettings, action: #selector(openSettings), keyEquivalent: ",")
         settings.target = self
         menu.addItem(settings)
 
-        let test = NSMenuItem(title: "Test dzwieku", action: #selector(testSound), keyEquivalent: "")
+        let test = NSMenuItem(title: L.menuSoundTest, action: #selector(testSound), keyEquivalent: "")
         test.target = self
         menu.addItem(test)
 
         menu.addItem(.separator())
 
-        let quit = NSMenuItem(title: "Zakoncz", action: #selector(quit), keyEquivalent: "q")
+        let quit = NSMenuItem(title: L.menuQuit, action: #selector(quit), keyEquivalent: "q")
         quit.target = self
         menu.addItem(quit)
 
@@ -173,14 +176,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func stateTitle() -> String {
         if let lastError {
-            return "Clank: blad - \(lastError)"
+            return L.clankErrorState(lastError)
         }
-        return isRunning ? "Clank: nasluchuje" : "Clank: zatrzymany"
+        return isRunning ? L.clankListening : L.clankStopped
     }
 
     private func refreshMenuState() {
         stateItem.title = stateTitle()
-        toggleItem.title = isRunning ? "Wstrzymaj detekcje" : "Wlacz detekcje"
+        toggleItem.title = isRunning ? L.pauseDetection : L.enableDetection
         singleModeItem.state = settingsStore.settings.soundMode == .single ? .on : .off
         scaledModeItem.state = settingsStore.settings.soundMode == .scaled ? .on : .off
     }
@@ -209,7 +212,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if !HelperInstaller.isInstalled {
             if !promptInstallHelper() {
                 isRunning = false
-                lastError = "helper niezainstalowany"
+                lastError = L.helperNotInstalledShort
                 refreshMenuState()
                 return
             }
@@ -239,11 +242,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func promptInstallHelper() -> Bool {
         let alert = NSAlert()
-        alert.messageText = "Clank wymaga instalacji helpera sensora"
-        alert.informativeText = "Aby czytac akcelerometr Clank potrzebuje jednorazowo zainstalowac proces w tle (LaunchDaemon). Pojawi sie standardowy systemowy monit o haslo administratora."
+        alert.messageText = L.helperRequiredTitle
+        alert.informativeText = L.helperRequiredBody
         alert.alertStyle = .informational
-        alert.addButton(withTitle: "Zainstaluj")
-        alert.addButton(withTitle: "Anuluj")
+        alert.addButton(withTitle: L.installButton)
+        alert.addButton(withTitle: L.cancelButton)
         guard alert.runModal() == .alertFirstButtonReturn else {
             return false
         }
@@ -261,10 +264,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func showPermissionAlert(_ error: Error) {
         let alert = NSAlert()
-        alert.messageText = "Clank potrzebuje uprawnien administratora"
-        alert.informativeText = "Nie udalo sie uruchomic helpera sensora: \(error.localizedDescription)"
+        alert.messageText = L.permissionRequiredTitle
+        alert.informativeText = L.sensorHelperStartFailed(error.localizedDescription)
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "OK")
+        alert.addButton(withTitle: L.okButton)
         alert.runModal()
     }
 
@@ -313,7 +316,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         suppressSensorFeedback()
         player.play(url: url, volume: settings.soundVolume)
-        lastEventItem.title = String(format: "Ostatni pomiar: %.4fg, poziom %d/5", amplitude, level + 1)
+        lastEventItem.title = L.lastReadingSlap(amplitude: amplitude, level: level + 1)
     }
 
     private func preloadConfiguredSounds() {
@@ -423,7 +426,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             marginMs: settings.lidStopMarginMilliseconds,
             maxMs: settings.lidMaxPlaybackMilliseconds
         )
-        lastEventItem.title = String(format: "Kat klapy: %.0f deg, zmiana %.0f deg", event.angle, accumulatedDelta)
+        lastEventItem.title = L.lastReadingLid(angle: event.angle, delta: accumulatedDelta)
     }
 
     private func suppressSensorFeedback() {
@@ -471,8 +474,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         do {
             try HelperInstaller.install()
             let alert = NSAlert()
-            alert.messageText = "Helper zainstalowany"
-            alert.informativeText = "Mozesz teraz wlaczyc detekcje."
+            alert.messageText = L.helperInstalledTitle
+            alert.informativeText = L.helperInstalledBody
             alert.alertStyle = .informational
             alert.runModal()
         } catch HelperInstallerError.userCancelled {
@@ -489,11 +492,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func uninstallHelper() {
         let confirm = NSAlert()
-        confirm.messageText = "Odinstalowac helpera Clank?"
-        confirm.informativeText = "Detekcja akcelerometru przestanie dzialac do ponownej instalacji. Aplikacja nie zostanie odinstalowana."
+        confirm.messageText = L.uninstallHelperConfirmTitle
+        confirm.informativeText = L.uninstallHelperConfirmBody
         confirm.alertStyle = .warning
-        confirm.addButton(withTitle: "Odinstaluj")
-        confirm.addButton(withTitle: "Anuluj")
+        confirm.addButton(withTitle: L.uninstallButton)
+        confirm.addButton(withTitle: L.cancelButton)
         guard confirm.runModal() == .alertFirstButtonReturn else { return }
 
         if isRunning { stopMonitoring() }
@@ -509,7 +512,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         rebuildMenu()
         let done = NSAlert()
-        done.messageText = "Helper odinstalowany"
+        done.messageText = L.helperUninstalledTitle
         done.alertStyle = .informational
         done.runModal()
     }
