@@ -2,107 +2,82 @@ import AppKit
 import Foundation
 
 enum SensorHelperClientError: LocalizedError {
-    case missingExecutable
-    case launchRejected(String)
+    case daemonNotInstalled
+    case eventsFileMissing(String)
 
     var errorDescription: String? {
         switch self {
-        case .missingExecutable:
-            return "brak sciezki do pliku wykonywalnego"
-        case .launchRejected(let message):
-            return message
+        case .daemonNotInstalled:
+            return "Helper sensora nie jest zainstalowany. Uruchom scripts/install-helper.sh i sprobuj ponownie."
+        case .eventsFileMissing(let path):
+            return "Brak pliku zdarzen helpera (\(path)). Sprawdz czy LaunchDaemon dziala: sudo launchctl list | grep clank"
         }
     }
 }
 
 final class SensorHelperClient {
+    static let eventsPath = "/tmp/clank-helper.events"
+    static let heartbeatPath = "/tmp/clank-helper.heartbeat"
+    static let plistInstallPath = "/Library/LaunchDaemons/dev.conceptfab.clank.sensor-helper.plist"
+
     var onEvent: ((SlapEvent) -> Void)?
     var onLidAngleEvent: ((LidAngleEvent) -> Void)?
 
     private let settingsProvider: () -> AppSettings
-    private let sessionID = UUID().uuidString
-    private var eventsURL: URL
-    private var heartbeatURL: URL
     private var pollTimer: DispatchSourceTimer?
+    private var heartbeatTimer: DispatchSourceTimer?
     private var readOffset: UInt64 = 0
     private var pending = Data()
-    private var lastHeartbeatTouch = Date.distantPast
-    private var helperProcess: Process?
 
     init(settingsProvider: @escaping () -> AppSettings) {
         self.settingsProvider = settingsProvider
-        let temp = FileManager.default.temporaryDirectory
-        eventsURL = temp.appendingPathComponent("Clank-\(sessionID).events.jsonl")
-        heartbeatURL = temp.appendingPathComponent("Clank-\(sessionID).heartbeat")
     }
 
     func start() throws {
-        guard let executablePath = Bundle.main.executableURL?.path else {
-            throw SensorHelperClientError.missingExecutable
+        guard FileManager.default.fileExists(atPath: Self.plistInstallPath) else {
+            throw SensorHelperClientError.daemonNotInstalled
         }
 
-        FileManager.default.createFile(atPath: eventsURL.path, contents: nil)
-        FileManager.default.createFile(atPath: heartbeatURL.path, contents: Data("alive".utf8))
+        touchHeartbeat()
 
-        let settings = settingsProvider()
-        let helperArgs: [String] = [
-            "-n",
-            executablePath,
-            "--sensor-helper",
-            "--events-file", eventsURL.path,
-            "--heartbeat-file", heartbeatURL.path,
-            "--min-amplitude", String(format: "%.6f", settings.minAmplitude),
-            "--cooldown", "\(settings.cooldownMilliseconds)"
-        ]
-
-        let logURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("Clank-\(sessionID).helper.log")
-        FileManager.default.createFile(atPath: logURL.path, contents: nil)
-
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
-        process.arguments = helperArgs
-
-        if let logHandle = try? FileHandle(forWritingTo: logURL) {
-            process.standardOutput = logHandle
-            process.standardError = logHandle
-        }
-
-        process.terminationHandler = { proc in
-            if proc.terminationStatus != 0 {
-                NSLog("Clank: helper exited with status \(proc.terminationStatus). If this happens at startup, run `make install-sudoers` once to enable passwordless launch.")
-            }
-        }
-
-        do {
-            try process.run()
-            helperProcess = process
-        } catch {
-            throw SensorHelperClientError.launchRejected("nie udalo sie uruchomic helpera: \(error.localizedDescription)")
-        }
-
+        let pollDeadline = DispatchTime.now() + .milliseconds(500)
         let timer = DispatchSource.makeTimerSource(queue: .main)
-        timer.schedule(deadline: .now() + .milliseconds(100), repeating: .milliseconds(100))
+        timer.schedule(deadline: pollDeadline, repeating: .milliseconds(100))
         timer.setEventHandler { [weak self] in
             self?.pollEvents()
         }
         timer.resume()
         pollTimer = timer
+
+        let heartbeat = DispatchSource.makeTimerSource(queue: .main)
+        heartbeat.schedule(deadline: .now(), repeating: .milliseconds(1000))
+        heartbeat.setEventHandler { [weak self] in
+            self?.touchHeartbeat()
+        }
+        heartbeat.resume()
+        heartbeatTimer = heartbeat
     }
 
     func stop() {
         pollTimer?.cancel()
         pollTimer = nil
-        if let proc = helperProcess, proc.isRunning {
-            proc.terminate()
+        heartbeatTimer?.cancel()
+        heartbeatTimer = nil
+    }
+
+    private func touchHeartbeat() {
+        let url = URL(fileURLWithPath: Self.heartbeatPath)
+        if !FileManager.default.fileExists(atPath: url.path) {
+            FileManager.default.createFile(atPath: url.path, contents: Data("alive".utf8))
+            try? FileManager.default.setAttributes([.posixPermissions: 0o666], ofItemAtPath: url.path)
+        } else {
+            try? FileManager.default.setAttributes([.modificationDate: Date()], ofItemAtPath: url.path)
         }
-        helperProcess = nil
-        try? FileManager.default.removeItem(at: heartbeatURL)
     }
 
     private func pollEvents() {
-        touchHeartbeatIfNeeded()
-        guard let handle = try? FileHandle(forReadingFrom: eventsURL) else { return }
+        guard FileManager.default.fileExists(atPath: Self.eventsPath) else { return }
+        guard let handle = try? FileHandle(forReadingFrom: URL(fileURLWithPath: Self.eventsPath)) else { return }
         defer { try? handle.close() }
 
         do {
@@ -115,12 +90,6 @@ final class SensorHelperClient {
         } catch {
             NSLog("Clank: event poll failed: \(error.localizedDescription)")
         }
-    }
-
-    private func touchHeartbeatIfNeeded() {
-        guard Date().timeIntervalSince(lastHeartbeatTouch) >= 1.0 else { return }
-        lastHeartbeatTouch = Date()
-        try? Data("alive".utf8).write(to: heartbeatURL, options: .atomic)
     }
 
     private func drainLines() {
