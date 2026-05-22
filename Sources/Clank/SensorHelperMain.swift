@@ -1,13 +1,17 @@
 import Foundation
 
 enum SensorHelperMain {
+    private static let defaultEventsPath = "/tmp/clank-helper.events"
+    private static let defaultHeartbeatPath = "/tmp/clank-helper.heartbeat"
+    private static let heartbeatStaleSeconds: TimeInterval = 3.0
+
     static func run() -> Never {
         let options = parseArguments()
-        guard let eventsPath = options["events-file"],
-              let heartbeatPath = options["heartbeat-file"] else {
-            FileHandle.standardError.write(Data("missing helper paths\n".utf8))
-            exit(2)
-        }
+        let eventsPath = options["events-file"] ?? defaultEventsPath
+        let heartbeatPath = options["heartbeat-file"] ?? defaultHeartbeatPath
+
+        ensureWorldWritable(path: eventsPath, initialContent: Data())
+        ensureWorldWritable(path: heartbeatPath, initialContent: Data("alive".utf8))
 
         let minAmplitude = Double(options["min-amplitude"] ?? "") ?? 0.05
         let cooldown = Int(options["cooldown"] ?? "") ?? 750
@@ -35,29 +39,42 @@ enum SensorHelperMain {
             append(HelperEvent(kind: "lid", amplitude: nil, level: nil, angle: event.angle, delta: event.delta, date: event.date), to: eventsPath)
         }
 
-        do {
-            try monitor.start()
-        } catch {
-            FileHandle.standardError.write(Data("sensor start failed: \(error.localizedDescription)\n".utf8))
-            exit(1)
-        }
+        var monitoring = false
 
         let timer = DispatchSource.makeTimerSource(queue: .main)
-        timer.schedule(deadline: .now() + 1, repeating: 1)
+        timer.schedule(deadline: .now() + .milliseconds(500), repeating: .milliseconds(500))
         timer.setEventHandler {
-            guard let attrs = try? FileManager.default.attributesOfItem(atPath: heartbeatPath),
-                  let modified = attrs[.modificationDate] as? Date else {
+            let fresh = isHeartbeatFresh(path: heartbeatPath)
+            if fresh && !monitoring {
+                do {
+                    try monitor.start()
+                    monitoring = true
+                } catch {
+                    FileHandle.standardError.write(Data("sensor start failed: \(error.localizedDescription)\n".utf8))
+                }
+            } else if !fresh && monitoring {
                 monitor.stop()
-                exit(0)
-            }
-            if Date().timeIntervalSince(modified) > 3.0 {
-                monitor.stop()
-                exit(0)
+                monitoring = false
             }
         }
         timer.resume()
 
         dispatchMain()
+    }
+
+    private static func isHeartbeatFresh(path: String) -> Bool {
+        guard let attrs = try? FileManager.default.attributesOfItem(atPath: path),
+              let modified = attrs[.modificationDate] as? Date else {
+            return false
+        }
+        return Date().timeIntervalSince(modified) <= heartbeatStaleSeconds
+    }
+
+    private static func ensureWorldWritable(path: String, initialContent: Data) {
+        if !FileManager.default.fileExists(atPath: path) {
+            FileManager.default.createFile(atPath: path, contents: initialContent)
+        }
+        try? FileManager.default.setAttributes([.posixPermissions: 0o666], ofItemAtPath: path)
     }
 
     private static func append(_ payload: HelperEvent, to path: String) {
