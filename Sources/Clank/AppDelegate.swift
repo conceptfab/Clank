@@ -1,5 +1,4 @@
 import AppKit
-import Darwin
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -176,23 +175,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func startMonitoring() {
         guard !isRunning else { return }
-
-        if geteuid() != 0 {
-            startPrivilegedHelper()
-            return
-        }
-
-        do {
-            try monitor.start()
-            isRunning = true
-            lastError = nil
-        } catch {
-            isRunning = false
-            lastError = error.localizedDescription
-            showPermissionAlertIfNeeded(error)
-        }
-
-        refreshMenuState()
+        startPrivilegedHelper()
     }
 
     private func stopMonitoring() {
@@ -232,14 +215,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         refreshMenuState()
-    }
-
-    private func showPermissionAlertIfNeeded(_ error: Error) {
-        guard geteuid() != 0 else {
-            showPermissionAlert(error)
-            return
-        }
-        showPermissionAlert(error)
     }
 
     private func showPermissionAlert(_ error: Error) {
