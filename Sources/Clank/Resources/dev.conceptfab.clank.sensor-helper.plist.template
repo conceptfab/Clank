@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>dev.conceptfab.clank.sensor-helper</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__HELPER_BINARY__</string>
+        <string>--sensor-helper</string>
+        <string>--events-file</string>
+        <string>/tmp/clank-helper.events</string>
+        <string>--heartbeat-file</string>
+        <string>/tmp/clank-helper.heartbeat</string>
+        <string>--min-amplitude</string>
+        <string>0.05</string>
+        <string>--cooldown</string>
+        <string>750</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/var/log/clank-helper.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/clank-helper.log</string>
+    <key>ProcessType</key>
+    <string>Interactive</string>
+</dict>
+</plist>
