@@ -10,9 +10,9 @@ Use this skill when an agent needs the canonical Clank website links and static 
 ## Canonical Links
 
 - Website: https://clink.conceptfab.com/
-- Download: https://github.com/conceptfab/clank/releases/latest
-- Source: https://github.com/conceptfab/clank
-- Install guide: https://github.com/conceptfab/clank/blob/main/INSTALL.md
+- Download: https://github.com/conceptfab/Clank/releases/latest
+- Source: https://github.com/conceptfab/Clank
+- Install guide: https://github.com/conceptfab/Clank/blob/main/INSTALL.md
 - Support: https://www.buymeacoffee.com/conceptfab
 
 ## Discovery Resources

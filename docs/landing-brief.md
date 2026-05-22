@@ -8,7 +8,7 @@
 
 Drugi tryb: **zamknięcie klapy** wyzwala dźwięk trzaskających drzwi. MacBook „idzie spać" trzaskając drzwiami.
 
-Wersja `1.0.0`, dystrybucja prywatna (dla znajomych), bez Apple Developer ID — ad-hoc signed DMG.
+Wersja `1.0.1`, dystrybucja prywatna (dla znajomych), bez Apple Developer ID — ad-hoc signed DMG.
 
 ## 2. Pozycjonowanie i ton
 
@@ -102,7 +102,7 @@ Dwie karty obok siebie:
 - **Honest disclaimer box:** „Clank isn't signed by Apple — Gatekeeper will warn you on first launch. Right-click → Open. Full instructions [here](INSTALL.md)."
 
 ### Footer
-- „Made by ConceptFab. macOS Apple Silicon only. v1.0.0."
+- „Made by ConceptFab. macOS Apple Silicon only. v1.0.1."
 - Link: GitHub, License (MIT), Email
 - **NIE:** Twitter ikony 50 sztuk, newsletter signup, „Made with love"
 

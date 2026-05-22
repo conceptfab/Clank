@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Clank Static Site Discovery API",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Static discovery endpoints for the Clank landing page."
   },
   "servers": [

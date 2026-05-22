@@ -11,9 +11,9 @@ Clank is a tiny free macOS menu-bar app for Apple Silicon Macs. It plays short v
 
 ## Download
 
-- [Download the latest Clank release](https://github.com/conceptfab/clank/releases/latest)
-- [View the source on GitHub](https://github.com/conceptfab/clank)
-- [Read the install guide](https://github.com/conceptfab/clank/blob/main/INSTALL.md)
+- [Download the latest Clank release](https://github.com/conceptfab/Clank/releases/latest)
+- [View the source on GitHub](https://github.com/conceptfab/Clank)
+- [Read the install guide](https://github.com/conceptfab/Clank/blob/main/INSTALL.md)
 
 ## Features
 
@@ -33,6 +33,6 @@ Clank is a tiny free macOS menu-bar app for Apple Silicon Macs. It plays short v
 
 - Website: https://clink.conceptfab.com/
 - Author: https://conceptfab.com/
-- GitHub: https://github.com/conceptfab/clank
-- License: https://github.com/conceptfab/clank/blob/main/LICENSE
+- GitHub: https://github.com/conceptfab/Clank
+- License: https://github.com/conceptfab/Clank/blob/main/LICENSE
 - Support: https://www.buymeacoffee.com/conceptfab
