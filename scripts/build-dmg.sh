@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# build-dmg.sh — pakuje Clank.app w DMG razem ze skryptami instalacyjnymi
+# build-dmg.sh — pakuje podpisana Clank.app w DMG
 #
 # Uzycie: ./scripts/build-dmg.sh <Clank.app> <wyjsciowy.dmg>
+#
+# DMG zawiera: Clank.app + INSTALL.md + LICENSE + symlink /Applications.
+# Aplikacja samodzielnie instaluje helpera sensora przy pierwszym uruchomieniu
+# (przez NSAlert + macOS password prompt). Skrypty install/uninstall sa
+# dostepne w repo do dev/diagnostyki, ale nie sa dystrybuowane w DMG.
 
 APP_PATH="${1:?usage: build-dmg.sh <Clank.app> <output.dmg>}"
 OUT_DMG="${2:?usage: build-dmg.sh <Clank.app> <output.dmg>}"
@@ -23,10 +28,6 @@ echo "==> Przygotowuje zawartosc DMG w ${STAGE}"
 cp -R "${APP_PATH}" "${STAGE}/Clank.app"
 cp INSTALL.md "${STAGE}/INSTALL.md"
 cp LICENSE "${STAGE}/LICENSE"
-mkdir -p "${STAGE}/scripts"
-cp scripts/install-helper.sh "${STAGE}/scripts/"
-cp scripts/uninstall-helper.sh "${STAGE}/scripts/"
-chmod +x "${STAGE}/scripts/"*.sh
 
 # Symlink do /Applications dla ladnego drag-to-install UX
 ln -s /Applications "${STAGE}/Applications"

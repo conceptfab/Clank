@@ -7,96 +7,81 @@ czujnik klapy / akcelerometr wykryje uderzenie lub ruch klapy.
 - Mac z Apple Silicon (M1 / M2 / M3 / M4 / nowsze)
 - macOS 13 Ventura lub nowszy
 
-## Instalacja krok po kroku
+## Instalacja — 3 kroki
 
-### 1. Otwarcie DMG i przeciagniecie aplikacji
+### 1. Przeciagnij `Clank.app` do `Applications`
 
-1. Otworz `Clank-1.0.0.dmg`
-2. Przeciagnij `Clank.app` do folderu `Applications`
+W otwartym oknie DMG przeciagnij ikone `Clank.app` na skrot `Applications`.
 
 ### 2. Pierwsze uruchomienie — obejscie Gatekeepera
 
-Aplikacja nie jest podpisana przez Apple (nie kupilismy Developer ID),
-wiec macOS zablokuje pierwsze uruchomienie. Trzeba to obejsc raz:
+Aplikacja nie jest podpisana przez Apple (test prywatny), wiec macOS
+zablokuje pierwsze uruchomienie. Trzeba to obejsc raz:
 
-**Opcja A — przez Findera (najprostsza):**
+**Wariant A — prawym przyciskiem (najprostszy):**
 1. W `Applications` kliknij `Clank.app` **prawym przyciskiem** (lub Ctrl+klik)
 2. Wybierz `Otworz`
-3. Pojawi sie ostrzezenie — kliknij `Otworz` jeszcze raz
-4. Aplikacja zostaje na bialej liscie. Kolejne uruchomienia juz beda dzialaly normalnie.
+3. Pojawi sie ostrzezenie — kliknij `Otworz` ponownie
+4. Aplikacja zostaje na bialej liscie systemu, kolejne uruchomienia juz beda dzialaly normalnie.
 
-**Opcja B — przez Terminal (jezeli A nie zadziala):**
+**Wariant B — przez Terminal (jezeli A nie zadziala):**
 ```bash
 xattr -dr com.apple.quarantine /Applications/Clank.app
 open /Applications/Clank.app
 ```
 
-### 3. Instalacja helpera sensora (jednorazowo)
+### 3. Zainstaluj helpera (jeden klik)
 
-Clank potrzebuje uprawnien administratora zeby czytac akcelerometr.
-Zamiast prosic o haslo za kazdym razem, instalujemy raz LaunchDaemon
-ktory dziala w tle.
+Przy pierwszym uruchomieniu Clank pokaze okno:
 
-W DMG znajdziesz folder `scripts`. Otworz Terminal w tym katalogu
-(albo przeciagnij `install-helper.sh` do Terminala) i uruchom:
+> **Clank wymaga instalacji helpera sensora**
+> Aby czytac akcelerometr Clank potrzebuje jednorazowo zainstalowac proces w tle (LaunchDaemon).
 
-```bash
-./scripts/install-helper.sh /Applications/Clank.app
-```
+Kliknij `Zainstaluj`. Pojawi sie standardowy systemowy monit o haslo
+administratora — wpisz haslo Maca i potwierdz.
 
-Skrypt poprosi o haslo administratora **raz**. Po wykonaniu:
-- helper dziala w tle jako system daemon
-- Clank.app moze go uzywac bez sudo
-- daemon uruchamia sie automatycznie po restarcie Maca
+Po chwili w pasku menu (gora ekranu) pojawi sie ikona Clank. Kliknij ja
+— status powinien byc `Clank: nasluchuje`.
 
-### 4. Sprawdzenie ze wszystko dziala
+Stuknij lekko w obudowe Maca — powinien zagrac dzwiek. Otworz/zamknij klape
+(jezeli wlaczyles dzwiek klapy w ustawieniach) — powinien zagrac dzwiek klapy.
 
-1. Otworz `Clank.app` z `Applications`
-2. W pasku menu (gora ekranu) powinna pojawic sie ikona Clank
-3. Kliknij ikone — w menu rozwinie sie status: `Clank: nasluchuje`
-4. Stuknij lekko w obudowe Maca — powinien zagrac dzwiek
+## Odinstalowanie helpera
 
-Jezeli widzisz `Clank: blad - Helper sensora nie jest zainstalowany`,
-wroc do kroku 3.
+Z menu Clank w pasku menu wybierz: `Helper... > Odinstaluj helpera...`.
+Aplikacja poprosi o potwierdzenie i haslo administratora.
 
-## Odinstalowanie
+## Odinstalowanie aplikacji
 
 ```bash
-# 1. Helper
-./scripts/uninstall-helper.sh
-
-# 2. Aplikacja
+# Najpierw odinstaluj helpera (przez menu Clank, patrz wyzej).
+# Potem usun aplikacje i jej dane:
 rm -rf /Applications/Clank.app
 rm -rf ~/Library/Application\ Support/Clank
 ```
 
 ## Diagnostyka
 
-**Helper nie startuje:**
+**Helper nie dziala:**
 ```bash
 sudo launchctl print system/dev.conceptfab.clank.sensor-helper | head -20
 tail -50 /var/log/clank-helper.log
 ```
 
-**Sprawdz czy daemon dziala:**
-```bash
-sudo launchctl list | grep clank
-```
+**Wymusz reinstalacje helpera:**
+W menu Clank: `Helper... > Reinstaluj helpera...`
 
-Powinno wypisac PID + label `dev.conceptfab.clank.sensor-helper`.
-
-**Brak ikony w pasku menu po uruchomieniu:**
-Sprawdz Activity Monitor czy proces `Clank` zyje. Jezeli nie,
-otworz Konsole.app, filtruj `Clank` — bedzie tam log bledu.
+**Brak ikony w pasku menu:**
+Sprawdz Activity Monitor czy proces `Clank` zyje. Jezeli nie, otworz Konsole.app,
+filtruj `Clank` — bedzie tam log bledu.
 
 ## Znane ograniczenia (wersja test-friend)
 
-- aplikacja jest Apple Silicon only (Intel Maki nie maja tego akcelerometru)
-- parametry detekcji (`Min amplitude`, `Cooldown`) w ustawieniach
-  **nie wplywaja** na aktywny helper w tej wersji; sa fixed w plist daemona.
-  Zmiana wymaga edycji `/Library/LaunchDaemons/dev.conceptfab.clank.sensor-helper.plist`
-  + `sudo launchctl bootout system/... && sudo launchctl bootstrap system/...`.
-- aplikacja nie jest podpisana przez Apple — przy kazdym restarcie macOS
-  moze pokazac ostrzezenie, jezeli atrybut quarantine zostal odnowiony
-  (zazwyczaj nie powraca). W razie potrzeby powtorz `xattr -dr com.apple.quarantine`.
-- brak auto-update — nowe wersje trzeba pobrac recznie.
+- Apple Silicon only (Intel Maki nie maja tego akcelerometru)
+- parametry detekcji (`Min amplitude`, `Cooldown`) w oknie ustawien **nie
+  wplywaja** na aktywny helper w tej wersji; sa hardcoded w plist daemona.
+  Zmiana wymaga rownoczesnej edycji plist + bootout/bootstrap daemona.
+- aplikacja nie jest podpisana przez Apple — przy kazdym restarcie macOS moze
+  pokazac ostrzezenie, jezeli atrybut quarantine zostal odnowiony (zwykle nie).
+  W razie potrzeby powtorz `xattr -dr com.apple.quarantine`.
+- brak auto-update — nowe wersje pobierasz recznie.

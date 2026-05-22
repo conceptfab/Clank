@@ -46,6 +46,10 @@ helper monitoruje akcelerometr gdy heartbeat jest swiezy (<3s), zapisuje
 zdarzenia do `/tmp/clank-helper.events` (JSONL). Aplikacja odczytuje
 zdarzenia z offsetu.
 
+Helper jest instalowany przez `HelperInstaller` (NSAppleScript + `with
+administrator privileges`) bez konieczosci terminala — jeden natywny
+macOS password prompt przy pierwszym uruchomieniu aplikacji.
+
 ## Tryby dzwiekow
 
 - **Jeden dzwiek**: kazde wykryte uderzenie odtwarza wybrany plik, bez wzgledu na amplitude
@@ -68,12 +72,16 @@ W innym terminalu uruchom aplikacje user-mode:
 make run
 ```
 
-Aby zainstalowac/odinstalowac LaunchDaemona lokalnie:
+Aby zainstalowac/odinstalowac LaunchDaemona lokalnie (workflow CI/dev,
+omija interaktywny prompt aplikacji):
 
 ```bash
-make install-helper
-make uninstall-helper
+./scripts/install-helper.sh /Applications/Clank.app
+./scripts/uninstall-helper.sh
 ```
+
+Uzytkownik koncowy nie musi tych skryptow uzywac — aplikacja instaluje
+helpera sama przy pierwszym uruchomieniu (patrz `INSTALL.md`).
 
 ## Testy
 
