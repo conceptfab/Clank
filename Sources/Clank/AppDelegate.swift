@@ -135,6 +135,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         modeItem.submenu = modeMenu
         menu.addItem(modeItem)
 
+        let helperItem = NSMenuItem(title: "Helper...", action: nil, keyEquivalent: "")
+        let helperMenu = NSMenu()
+
+        let reinstallHelperItem = NSMenuItem(title: HelperInstaller.isInstalled ? "Reinstaluj helpera..." : "Zainstaluj helpera...",
+                                             action: #selector(reinstallHelper),
+                                             keyEquivalent: "")
+        reinstallHelperItem.target = self
+        helperMenu.addItem(reinstallHelperItem)
+
+        let uninstallHelperItem = NSMenuItem(title: "Odinstaluj helpera...",
+                                             action: #selector(uninstallHelper),
+                                             keyEquivalent: "")
+        uninstallHelperItem.target = self
+        uninstallHelperItem.isEnabled = HelperInstaller.isInstalled
+        helperMenu.addItem(uninstallHelperItem)
+
+        helperItem.submenu = helperMenu
+        menu.addItem(helperItem)
+
         let settings = NSMenuItem(title: "Ustawienia...", action: #selector(openSettings), keyEquivalent: ",")
         settings.target = self
         menu.addItem(settings)
@@ -187,6 +206,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func startPrivilegedHelper() {
+        if !HelperInstaller.isInstalled {
+            if !promptInstallHelper() {
+                isRunning = false
+                lastError = "helper niezainstalowany"
+                refreshMenuState()
+                return
+            }
+        }
+
         let client = SensorHelperClient(settingsProvider: { SettingsStore.shared.settings })
         client.onEvent = { [weak self] event in
             self?.handle(event)
@@ -207,6 +235,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         refreshMenuState()
+    }
+
+    private func promptInstallHelper() -> Bool {
+        let alert = NSAlert()
+        alert.messageText = "Clank wymaga instalacji helpera sensora"
+        alert.informativeText = "Aby czytac akcelerometr Clank potrzebuje jednorazowo zainstalowac proces w tle (LaunchDaemon). Pojawi sie standardowy systemowy monit o haslo administratora."
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Zainstaluj")
+        alert.addButton(withTitle: "Anuluj")
+        guard alert.runModal() == .alertFirstButtonReturn else {
+            return false
+        }
+
+        do {
+            try HelperInstaller.install()
+            return true
+        } catch HelperInstallerError.userCancelled {
+            return false
+        } catch {
+            showPermissionAlert(error)
+            return false
+        }
     }
 
     private func showPermissionAlert(_ error: Error) {
@@ -410,6 +460,58 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let url = resolver.soundURL(for: 0.05) {
             player.play(url: url, volume: settingsStore.settings.soundVolume)
         }
+    }
+
+    @objc private func reinstallHelper() {
+        let wasRunning = isRunning
+        if wasRunning {
+            stopMonitoring()
+        }
+
+        do {
+            try HelperInstaller.install()
+            let alert = NSAlert()
+            alert.messageText = "Helper zainstalowany"
+            alert.informativeText = "Mozesz teraz wlaczyc detekcje."
+            alert.alertStyle = .informational
+            alert.runModal()
+        } catch HelperInstallerError.userCancelled {
+            // user cancelled — no-op
+        } catch {
+            showPermissionAlert(error)
+        }
+
+        rebuildMenu()
+        if wasRunning {
+            startMonitoring()
+        }
+    }
+
+    @objc private func uninstallHelper() {
+        let confirm = NSAlert()
+        confirm.messageText = "Odinstalowac helpera Clank?"
+        confirm.informativeText = "Detekcja akcelerometru przestanie dzialac do ponownej instalacji. Aplikacja nie zostanie odinstalowana."
+        confirm.alertStyle = .warning
+        confirm.addButton(withTitle: "Odinstaluj")
+        confirm.addButton(withTitle: "Anuluj")
+        guard confirm.runModal() == .alertFirstButtonReturn else { return }
+
+        if isRunning { stopMonitoring() }
+
+        do {
+            try HelperInstaller.uninstall()
+        } catch HelperInstallerError.userCancelled {
+            return
+        } catch {
+            showPermissionAlert(error)
+            return
+        }
+
+        rebuildMenu()
+        let done = NSAlert()
+        done.messageText = "Helper odinstalowany"
+        done.alertStyle = .informational
+        done.runModal()
     }
 
     @objc private func quit() {
