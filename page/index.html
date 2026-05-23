@@ -11,7 +11,13 @@
 <meta property="og:title" content="Clank — OUCH OUCH OUCH" />
 <meta property="og:description" content="A tiny menu-bar app that makes your MacBook scream when you touch it." />
 <meta property="og:url" content="https://clank.conceptfab.com/" />
-<meta property="og:image" content="https://clank.conceptfab.com/favicon.webp" />
+<meta property="og:image" content="https://clank.conceptfab.com/og-image.png" />
+<meta property="og:image:width" content="1216" />
+<meta property="og:image:height" content="640" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://clank.conceptfab.com/og-image.png" />
+<meta name="twitter:title" content="Clank — OUCH OUCH OUCH" />
+<meta name="twitter:description" content="A tiny menu-bar app that makes your MacBook scream when you touch it." />
 <meta property="og:type" content="website" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -688,6 +694,78 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; }
 }
+
+/* ===== Hero SCREAM button ===== */
+.scream-btn {
+  display: inline-flex; align-items: center; gap: 14px;
+  margin: 18px 0 8px;
+  padding: 22px 34px;
+  background: var(--ink); color: var(--lime);
+  border: 4px solid var(--ink);
+  border-radius: 14px;
+  font-family: var(--pop); font-size: 28px; letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 8px 8px 0 var(--pink);
+  transform: rotate(-1.5deg);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.scream-btn:hover { transform: rotate(-1.5deg) translate(-2px,-2px); box-shadow: 12px 12px 0 var(--pink); }
+.scream-btn:active { transform: rotate(-1.5deg) translate(4px,4px); box-shadow: 2px 2px 0 var(--pink); }
+.scream-btn.playing { animation: screamShake .25s ease infinite; }
+@keyframes screamShake {
+  0%,100% { transform: rotate(-1.5deg); }
+  25% { transform: rotate(-3.5deg) translate(-3px,1px); }
+  75% { transform: rotate(1deg) translate(3px,-1px); }
+}
+.scream-wrap { display:flex; flex-direction:column; align-items:flex-start; }
+.scream-hint { font-family: var(--mono); font-size: 12px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.65; margin: 4px 0 0 8px; }
+
+/* ===== Sticky download CTA ===== */
+.sticky-dl {
+  position: fixed; right: 22px; bottom: 22px; z-index: 60;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 22px;
+  background: var(--ink); color: var(--lime);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--pop); font-size: 18px; letter-spacing: 0.03em;
+  box-shadow: 5px 5px 0 var(--pink);
+  opacity: 0; transform: translateY(20px) scale(0.9); pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+}
+.sticky-dl.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.sticky-dl:hover { transform: translateY(-3px) scale(1.05); box-shadow: 7px 9px 0 var(--pink); }
+@media (max-width: 640px) { .sticky-dl { right: 12px; bottom: 12px; font-size: 14px; padding: 10px 16px; } }
+
+/* ===== FAQ ===== */
+.faq-list { display: grid; gap: 16px; margin-top: 36px; max-width: 880px; }
+.faq-item {
+  background: var(--paper);
+  border: 4px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--ink);
+  overflow: hidden;
+}
+.faq-item:nth-child(2n) { box-shadow: -6px 6px 0 var(--ink); transform: rotate(0.4deg); }
+.faq-item:nth-child(3n) { background: #fff; }
+.faq-item summary {
+  list-style: none; cursor: pointer;
+  padding: 22px 26px;
+  font-family: var(--pop); font-size: 22px; line-height: 1.2;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+"; font-family: var(--pop); font-size: 28px;
+  width: 38px; height: 38px; display: grid; place-items: center;
+  background: var(--bg); border: 3px solid var(--ink); border-radius: 50%;
+  transition: transform .25s ease, background .2s, color .2s;
+  flex-shrink: 0; line-height: 1;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); background: var(--pink); color: #fff; }
+.faq-item .faq-body { padding: 0 26px 24px; font-family: var(--grot); font-size: 17px; line-height: 1.55; }
+.faq-item .faq-body strong { background: var(--lime); padding: 1px 6px; font-weight: 800; }
+
 </style>
 </head>
 <body>
@@ -758,6 +836,14 @@ footer {
 
     <div class="subline">
       A tiny menu-bar app that makes your MacBook <em>scream</em> when you touch it. Yes. That's the entire pitch.
+    </div>
+
+    <div class="scream-wrap">
+      <button type="button" class="scream-btn" id="scream-btn" aria-label="Play a random scream sample">
+        <span class="speaker" aria-hidden="true">🔊</span>
+        <span>HEAR HIM SCREAM</span>
+      </button>
+      <span class="scream-hint">↑ click. seriously. turn up the volume.</span>
     </div>
 
     <div class="hero-cta">
@@ -979,6 +1065,47 @@ footer {
   </div>
 </section>
 
+<!-- ============ FAQ ============ -->
+<section id="faq" class="bg-blue" data-screen-label="06 FAQ">
+  <div class="wrap">
+    <h2 class="section-title">Questions you didn't<br/><span class="underline">actually ask.</span></h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Will this damage my MacBook?</summary>
+        <div class="faq-body">No. We <strong>read</strong> the motion sensor, we don't poke it with a screwdriver. The accelerometer was shipped by Apple to protect spinning hard drives in 2005. Nobody told it to retire.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is it actually free? Like… free free?</summary>
+        <div class="faq-body">Yes. <strong>No paid tier</strong>. No subscription. No "Pro". No newsletter waiting in the install flow. If you like it, throw a couple bucks at <a href="https://www.buymeacoffee.com/conceptfab" target="_blank" rel="noopener">buymeacoffee</a>. Or don't. He'll still scream.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Why is it unsigned? Is it a virus?</summary>
+        <div class="faq-body">Apple's developer signing costs $99/year and Clank costs <strong>$0</strong>. The math didn't math. The source is on GitHub — read it before you run it if you're nervous. Gatekeeper will warn you once: right-click → Open → done.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Intel Mac?</summary>
+        <div class="faq-body"><strong>Apple Silicon only</strong> (M1/M2/M3/M4). Sorry. Building for both was 3× the work for an app that yells.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use my own sounds?</summary>
+        <div class="faq-body">Yes — drop any <strong>.mp3</strong> into the sounds folder. Your boss's voice. A cat. A specific Vine from 2014. We support your choices.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Does it phone home / track me / sell my data?</summary>
+        <div class="faq-body"><strong>Zero analytics</strong>. Zero telemetry. Zero network calls. He lives entirely in your menu bar and screams into the void.</div>
+      </details>
+      <details class="faq-item">
+        <summary>My coworkers hate me now.</summary>
+        <div class="faq-body">Working as intended. Pause button is in the menu bar dropdown. We also accept <em>"sensitivity too high"</em> as a valid complaint — slider's right next to pause.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Will you add a Windows version?</summary>
+        <div class="faq-body">No. Windows laptops don't need this — they already creak, rattle, and grind on their own. And even if they screamed, the fans would drown out every last moan. Sorry.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="wrap foot-row">
@@ -992,6 +1119,9 @@ footer {
     </div>
   </div>
 </footer>
+
+<!-- Sticky download (appears after scroll past hero) -->
+<a class="sticky-dl" id="sticky-dl" href="https://github.com/conceptfab/Clank/releases">↓ DOWNLOAD</a>
 
 <script>
 (function () {
@@ -1013,6 +1143,43 @@ footer {
   }
   // warm cache
   PAIN_SOUNDS.forEach(s => { const a = new Audio(s); a.preload = "auto"; cache.set(s, a); });
+
+  // hero SCREAM button — random sample on click
+  const screamBtn = document.getElementById('scream-btn');
+  if (screamBtn) {
+    let lastIdx = -1;
+    screamBtn.addEventListener('click', () => {
+      let i; do { i = Math.floor(Math.random()*PAIN_SOUNDS.length); } while (i === lastIdx && PAIN_SOUNDS.length > 1);
+      lastIdx = i;
+      play(PAIN_SOUNDS[i]);
+      screamBtn.classList.add('playing');
+      // spawn floating shout above button
+      const stage = screamBtn.closest('.scream-wrap');
+      const el = document.createElement('div');
+      el.className = 'shout';
+      el.textContent = VOICE_LINES[i] || 'OUCH!';
+      el.style.setProperty('--rot', (Math.random()*20-10).toFixed(1)+'deg');
+      el.style.left = '50%';
+      el.style.top = '-10px';
+      el.style.color = 'var(--pink)';
+      stage.style.position = 'relative';
+      stage.appendChild(el);
+      setTimeout(()=> el.remove(), 850);
+      setTimeout(()=> screamBtn.classList.remove('playing'), 600);
+    });
+  }
+
+  // sticky download — appear after scrolling past hero
+  const sticky = document.getElementById('sticky-dl');
+  if (sticky) {
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.6) sticky.classList.add('show');
+      else sticky.classList.remove('show');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
 
   // each mascot click spawns a shout + plays its sound
   document.querySelectorAll('.mascot-item').forEach(m => {
