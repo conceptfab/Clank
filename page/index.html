@@ -316,7 +316,26 @@ section { position: relative; padding: 80px 0; }
 .sticker.s1 { top: 8%;  left: 6%;  transform: rotate(-8deg); background: var(--pink); color: #fff; }
 .sticker.s2 { top: 5%;  right: 8%; transform: rotate(9deg);  background: var(--blue); }
 .sticker.s3 { top: 30%; left: 2%;  transform: rotate(6deg);  background: var(--lime); font-size: 26px; }
-.sticker.s4 { top: 36%; right: 3%; transform: rotate(-12deg); background: var(--orange); color: #fff; }
+.sticker.s4 {
+  top: 32%; right: 2%;
+  background: var(--orange);
+  color: #fff;
+  font-size: 52px;
+  padding: 18px 30px 20px;
+  letter-spacing: 1px;
+  transform-origin: center;
+  animation: newWiggle 1.2s ease-in-out infinite, newBlink 0.7s steps(2, end) infinite;
+}
+@keyframes newWiggle {
+  0%, 100% { transform: rotate(-12deg) scale(1); }
+  25%      { transform: rotate(-4deg) scale(1.25); }
+  50%      { transform: rotate(-14deg) scale(1.1); }
+  75%      { transform: rotate(-8deg) scale(1.3); }
+}
+@keyframes newBlink {
+  0%, 100% { background: var(--orange); color: #fff; box-shadow: 5px 5px 0 var(--ink); }
+  50%      { background: var(--yellow, #ffe24b); color: var(--ink); box-shadow: 5px 5px 0 var(--ink), 0 0 0 6px var(--pink); }
+}
 .sticker.s5 { bottom: 28%; left: 8%; transform: rotate(-5deg); background: var(--violet); color: #fff; font-size: 20px; }
 .sticker.s6 { bottom: 22%; right: 6%; transform: rotate(7deg); background: var(--red); color: #fff; font-size: 26px; }
 .sticker.s7 { bottom: 8%; left: 30%; transform: rotate(-3deg); background: var(--bg); font-size: 18px; }
@@ -819,7 +838,7 @@ footer {
 <section class="hero" data-screen-label="01 Hero — Wild">
   <span class="sticker s1">FREE!!</span>
   <span class="sticker s2">★ 3.2 MB ★</span>
-  <span class="sticker s3">by ConceptFab</span>
+  <a class="sticker s3" href="https://conceptfab.com" target="_blank" rel="noopener noreferrer">by ConceptFab</a>
   <span class="sticker s4">NEW</span>
   <span class="sticker s5">apple silicon ONLY</span>
   <span class="sticker s6">unsigned :(</span>
